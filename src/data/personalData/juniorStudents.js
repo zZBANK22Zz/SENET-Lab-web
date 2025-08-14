@@ -25,110 +25,98 @@ const juniorStudents = [
   },
   {
     personalInfo: {
-      id: "maya-coder",
-      firstName: "Maya",
-      lastName: "Coder",
-      fullName: "Maya Coder",
-      title: "Ms.",
+      id: "",
+      firstName: "",
+      lastName: "",
+      fullName: "",
+      title: "",
       position: "Undergraduate Research Assistant",
-      department: "Computer Science",
-      email: "maya.c@student.senetlab.edu",
-      profileImage: "/images/team/maya-coder.jpg",
-      bio: "Creative undergraduate student interested in UI/UX design and mobile application development. Contributing to user interface research projects.",
+      department: "",
+      email: "",
+      profileImage: "/images/team/",
+      bio: "",
       researchInterests: [
-        "UI/UX Design",
-        "Mobile Development",
-        "Human-Computer Interaction",
-        "Design Systems"
+        ""
       ],
-      supervisor: "Pim Patsorn",
-      yearStarted: "2024",
-      yearLevel: "2nd Year"
+      supervisor: "",
+      yearStarted: "",
+      yearLevel: ""
     },
     currentWork: {
-      title: "IoT Device Interface Design",
-      description: "Designing user-friendly interfaces for IoT security management applications"
+      title: "",
+      description: ""
     }
   },
   {
     personalInfo: {
-      id: "kai-developer",
-      firstName: "Kai",
-      lastName: "Developer",
-      fullName: "Kai Developer",
-      title: "Mr.",
+      id: "",
+      firstName: "",
+      lastName: "",
+      fullName: "",
+      title: "",
       position: "Undergraduate Research Assistant",
-      department: "Computer Engineering",
-      email: "kai.d@student.senetlab.edu",
-      profileImage: "/images/team/kai-developer.jpg",
-      bio: "Enthusiastic computer engineering student with interests in system programming and network protocols. Supporting network security research initiatives.",
+      department: "",
+      email: "",
+      profileImage: "/images/team/",
+      bio: "",
       researchInterests: [
-        "System Programming",
-        "Network Protocols",
-        "Low-Level Programming",
-        "Security Tools"
+        ""
       ],
-      supervisor: "Asst.Prof.Dr. Kuljaree Tantayakul",
-      yearStarted: "2023",
-      yearLevel: "4th Year"
+      supervisor: "",
+      yearStarted: "",
+      yearLevel: ""
     },
     currentWork: {
-      title: "Network Security Testing Tools",
-      description: "Developing automated tools for network vulnerability assessment"
+      title: "",
+      description: ""
     }
   },
   {
     personalInfo: {
-      id: "zoe-analyst",
-      firstName: "Zoe",
-      lastName: "Analyst",
-      fullName: "Zoe Analyst",
-      title: "Ms.",
+      id: "",
+      firstName: "",
+      lastName: "",
+      fullName: "",
+      title: "",
       position: "Undergraduate Research Assistant",
-      department: "Information Technology",
-      email: "zoe.a@student.senetlab.edu",
-      profileImage: "/images/team/zoe-analyst.jpg",
-      bio: "Data-driven IT student specializing in performance analysis and optimization. Assisting in research data collection and analysis projects.",
+      department: "",
+      email: "",
+      profileImage: "/images/team/",
+      bio: "",
       researchInterests: [
-        "Data Analysis",
-        "Performance Optimization",
-        "Statistical Analysis",
-        "Research Methodology"
+        ""
       ],
-      supervisor: "Niran Techno",
-      yearStarted: "2024",
-      yearLevel: "3rd Year"
+      supervisor: "",
+      yearStarted: "",
+      yearLevel: ""
     },
     currentWork: {
-      title: "Performance Metrics Analysis",
-      description: "Analyzing and visualizing performance data from various research experiments"
+      title: "",
+      description: ""
     }
   },
   {
     personalInfo: {
-      id: "leo-innovator",
-      firstName: "Leo",
-      lastName: "Innovator",
-      fullName: "Leo Innovator",
-      title: "Mr.",
+      id: "",
+      firstName: "",
+      lastName: "",
+      fullName: "",
+      title: "",
       position: "Undergraduate Research Assistant",
-      department: "Computer Science",
-      email: "leo.i@student.senetlab.edu",
-      profileImage: "/images/team/leo-innovator.jpg",
-      bio: "Innovative computer science student with passion for emerging technologies and research. Contributing to multiple lab projects while maintaining excellent academic performance.",
+      department: "",
+      email: "",
+      profileImage: "/images/team/",
+      bio: "",
       researchInterests: [
-        "Emerging Technologies",
-        "Research & Development",
-        "Innovation Management",
-        "Technology Integration"
+        ""
       ],
-      supervisor: "Asst.Prof.Dr. Adisak Intana",
-      yearStarted: "2023",
-      yearLevel: "4th Year"
+      supervisor: "",
+      yearStarted: "",
+      yearLevel: ""
     },
     currentWork: {
-      title: "Lab Innovation Projects Coordination",
-      description: "Coordinating and supporting various innovative research initiatives across different projects"
+      title: "",
+      description: ""
     }
   }
 ];
