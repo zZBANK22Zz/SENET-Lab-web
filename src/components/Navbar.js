@@ -37,7 +37,7 @@ const Navbar = () => {
                             <Link href="/TeamPage" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
                                 Team
                             </Link>
-                            <Link href="/" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                            <Link href="/JoinUs" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">
                                 Contact
                             </Link>
                         </div>

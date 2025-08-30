@@ -12,7 +12,8 @@ const juniorStudents = [
       profileImage: "/images/team/Ananthichai.JPG",
       bio: "Undergraduate student passionate about web development and cloud technologies. Assisting in research projects while completing bachelor's degree.",
       researchInterests: [
-        "Software Engineering"
+        "Software Engineering",
+        "Software Testing"
       ],
       supervisor: "Asst.Prof.Dr. Adisak Intana",
       yearStarted: "2024",
@@ -25,50 +26,50 @@ const juniorStudents = [
   },
   {
     personalInfo: {
-      id: "",
-      firstName: "",
-      lastName: "",
-      fullName: "",
-      title: "",
+      id: "tanthai-wongwichienkul",
+      firstName: "Tanthai",
+      lastName: "Wongwichienkul",
+      fullName: "Tanthai Wongwichienkul",
+      title: "Mr.",
       position: "Undergraduate Research Assistant",
-      department: "",
-      email: "",
-      profileImage: "/images/team/",
-      bio: "",
+      department: "Digital Engineering",
+      email: "s6530613008@phuket.psu.ac.th",
+      profileImage: "/images/team/tanthai.png",
+      bio: "Undergraduate student passionate about web development and cloud technologies. Assisting in research projects while completing bachelor's degree.",
       researchInterests: [
-        ""
+        "Software Engineering"
       ],
-      supervisor: "",
-      yearStarted: "",
-      yearLevel: ""
+      supervisor: "Asst.Prof.Dr. Adisak Intana",
+      yearStarted: "2024",
+      yearLevel: "4rd Year"
     },
     currentWork: {
-      title: "",
-      description: ""
+      title: "Formal model generation from pattern based wireless sensor networks",
+      description: "Developing a framework to generate Event-B formal models from reusable pattern-based wireless sensor network designs."
     }
   },
   {
     personalInfo: {
-      id: "",
-      firstName: "",
-      lastName: "",
-      fullName: "",
-      title: "",
+      id: "pongsakorn-kaewnaka",
+      firstName: "Pongsakorn",
+      lastName: "Kaewnaka",
+      fullName: "Pongsakorn Kaewnaka",
+      title: "Mr.",
       position: "Undergraduate Research Assistant",
-      department: "",
-      email: "",
-      profileImage: "/images/team/",
-      bio: "",
+      department: "Degital Engineering",
+      email: "Pongsakorn10399@gmail.com",
+      profileImage: "/images/team/pongsakorn.png",
+      bio: "Undergraduate student passionate about web development and cloud technologies. Assisting in research projects while completing bachelor's degree.",
       researchInterests: [
-        ""
+        "Software Engineering"
       ],
-      supervisor: "",
-      yearStarted: "",
-      yearLevel: ""
+      supervisor: "Asst.Prof.Dr. Adisak Intana",
+      yearStarted: "2024",
+      yearLevel: "4rd Year"
     },
     currentWork: {
-      title: "",
-      description: ""
+      title: "The development of combinations tools for black block testing techniques",
+      description: "This project presents BlackBoxTestGen, a web-based prototype that integrates three black-box testing techniques Equivalence Class Partitioning, Syntax Testing, and State Transition Testing into a unified platform for automated test case generation."
     }
   },
   {
@@ -100,7 +101,7 @@ const juniorStudents = [
       id: "chanakarn-khunkrai",
       firstName: "Chanakarn",
       lastName: "Khunkrai",
-      fullName: "Charnakarn Khunkrai",
+      fullName: "Chanakarn Khunkrai",
       title: "Ms.",
       position: "Undergraduate Research Assistant",
       department: "Digital Engineering",
