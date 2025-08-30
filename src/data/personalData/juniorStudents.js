@@ -74,26 +74,26 @@ const juniorStudents = [
   },
   {
     personalInfo: {
-      id: "",
-      firstName: "",
-      lastName: "",
-      fullName: "",
-      title: "",
+      id: "wittawin-amtrakool",
+      firstName: "Wittawin",
+      lastName: "Amtrakool",
+      fullName: "Wittawin Amtrakool",
+      title: "Mr.",
       position: "Undergraduate Research Assistant",
-      department: "",
-      email: "",
-      profileImage: "/images/team/",
-      bio: "",
+      department: "Digital Engineering",
+      email: "s6630613003@phuket.psu.ac.th",
+      profileImage: "/images/team/wittawin.png",
+      bio: "Undergraduate student passionate about web development and cloud technologies. Assisting in research projects while completing bachelor's degree.",
       researchInterests: [
-        ""
+        "Software Engineering"
       ],
-      supervisor: "",
-      yearStarted: "",
-      yearLevel: ""
+      supervisor: "Asst.Prof.Dr. Adisak Intana",
+      yearStarted: "2025",
+      yearLevel: "3rd Year"
     },
     currentWork: {
-      title: "",
-      description: ""
+      title: "Developing an ontology for guiding quality assurance according to ISO/IEC 29110",
+      description: "ISO/IEC 29110 is an international standard for software quality management and development in very small entities (VSEs). An ontology-based knowledge map helps organize its complex requirements and supports intelligent systems for quality assurance."
     }
   },
   {
