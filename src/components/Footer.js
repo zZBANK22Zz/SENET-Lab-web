@@ -27,7 +27,7 @@ export default function Footer() {
           <div>
             <h4 className="text-sm sm:text-base font-semibold mb-3 sm:mb-4">Research</h4>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">Publications</Link></li>
+              <li><Link href="/PublicationPage" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">Publications</Link></li>
               <li><Link href="#" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">Projects</Link></li>
               <li><Link href="#" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">Collaborations</Link></li>
               <li><Link href="#" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">Resources</Link></li>
@@ -36,7 +36,7 @@ export default function Footer() {
           <div>
             <h4 className="text-sm sm:text-base font-semibold mb-3 sm:mb-4">About</h4>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">Our Team</Link></li>
+              <li><Link href="/TeamPage" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">Our Team</Link></li>
               <li><Link href="#" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">News</Link></li>
               <li><Link href="#" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">Events</Link></li>
               <li><Link href="#" className="text-sm sm:text-base text-gray-400 hover:text-white transition-colors">Contact</Link></li>

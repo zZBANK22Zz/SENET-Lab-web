@@ -8,7 +8,7 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           <div className="text-center lg:text-left">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-6 lg:mb-8 leading-tight">
-              SENET Research Lab
+              SEnet Research Lab
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 mb-8 lg:mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
               Advancing the frontiers of Software Engineering and Network
@@ -20,7 +20,7 @@ export default function Hero() {
                 <LibraryBig />
                 Our Research
               </button>
-              <button onClick={() => {Router.push('/TeamPage')}} className="border-2 border-gray-300 text-gray-700 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium hover:border-gray-900 hover:text-gray-900 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base">
+              <button onClick={() => {Router.push('/JoinUs')}} className="border-2 border-gray-300 text-gray-700 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium hover:border-gray-900 hover:text-gray-900 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base">
                 <svg
                   className="w-4 h-4 sm:w-5 sm:h-5"
                   fill="currentColor"
@@ -32,7 +32,7 @@ export default function Hero() {
                     clipRule="evenodd"
                   />
                 </svg>
-                Meet the Team
+                Join our Team
               </button>
             </div>
           </div>

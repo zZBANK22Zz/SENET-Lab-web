@@ -97,26 +97,26 @@ const juniorStudents = [
   },
   {
     personalInfo: {
-      id: "",
-      firstName: "",
-      lastName: "",
-      fullName: "",
-      title: "",
+      id: "chanakarn-khunkrai",
+      firstName: "Chanakarn",
+      lastName: "Khunkrai",
+      fullName: "Charnakarn Khunkrai",
+      title: "Ms.",
       position: "Undergraduate Research Assistant",
-      department: "",
-      email: "",
-      profileImage: "/images/team/",
-      bio: "",
+      department: "Digital Engineering",
+      email: "s6530613016@phuket.psu.ac.th",
+      profileImage: "/images/team/chanakarn.png",
+      bio: "Undergraduate student passionate about web development and cloud technologies. Assisting in research projects while completing bachelor's degree.",
       researchInterests: [
-        ""
+        "Web Development",
       ],
-      supervisor: "",
-      yearStarted: "",
-      yearLevel: ""
+      supervisor: "Kuljaree Tantayakul",
+      yearStarted: "2024",
+      yearLevel: "4rd Year"
     },
     currentWork: {
-      title: "",
-      description: ""
+      title: "Stock Web Application",
+      description: "To create web application for stock management in Price of Songkhla University"
     }
   }
 ];
