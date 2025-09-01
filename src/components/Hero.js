@@ -1,5 +1,6 @@
 import { LibraryBig } from "lucide-react";
 import Router from "next/router";
+import PhotoSlideshow from "./PhotoSlideShow";
 
 export default function Hero() {
   return (
@@ -38,11 +39,7 @@ export default function Hero() {
           </div>
 
           <div className="relative mt-8 lg:mt-0">
-            <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 lg:p-2">
-              <div className="aspect-video bg-gray-200 rounded-lg flex items-center justify-center">
-                <img src="/images/logo/logo1.png" alt="SEnet Research Lab" className="object-contain h-48 sm:h-64 lg:h-72" />
-              </div>
-            </div>
+            <PhotoSlideshow />
           </div>
         </div>
       </div>
