@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "categories": [
+    { "id": "intl-journal", "label": "International Journal Articles" },
+    { "id": "intl-proceedings", "label": "International Proceedings" },
+    { "id": "national-proceedings", "label": "National Proceedings" }
+  ]
+  
+}

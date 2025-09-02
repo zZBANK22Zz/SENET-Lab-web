@@ -1,0 +1,24 @@
+{
+    "person": {
+        "id": "wasimon-panichpattanakul",
+        "name": "Dr. WASIMON PANICHPATTANAKUL",
+        "role": "Professor"
+    },
+    "authorships": [
+        {
+            "pubId": "ecti-con-2017-control-plane-openflow-segment-routing-sdn",
+            "order": 1,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "ecti-con-2017-experimental-analysis-sdn",
+            "order": 2,
+            "isCorresponding": true
+        },
+        {
+            "pubId": "ispacs-2016-mitigate-load-sharing-segment-routing",
+            "order": 3,
+            "isCorresponding": false
+        }
+    ]
+}

@@ -1,0 +1,100 @@
+{
+    "person": {
+        "id": "adisak-intana",
+        "name": "Asst.Prof.Dr. ADISAK INTANA",
+        "role": "Professor"
+    },
+    "authorships": [
+        {
+            "pubId": "ijacsa-2023-automated-impact-analysis-uc",
+            "order": 1,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "ijaseit-2023-customer-needs-boc",
+            "order": 2,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "ijacsa-2023-ontology-tcgen",
+            "order": 3,
+            "isCorresponding": true
+        },
+        {
+            "pubId": "eceasst-2014-formal-co-simulation-wsn",
+            "order": 4,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "jcsse-2024-nlp-ambiguity-thai-srs",
+            "order": 5,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "ecti-con-2023-statetest",
+            "order": 6,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "itc-cscc-2021-running-event-ontology",
+            "order": 7,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "ecti-con-2020-pattern-based-wsn",
+            "order": 8,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "incit-2020-syntest",
+            "order": 9,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "istem-ed-2020-requirement-engineering-iipbl",
+            "order": 10,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "icsec-2019-impact-analysis-test-cases",
+            "order": 11,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "icsec-2019-enhancing-testing-ontology",
+            "order": 12,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "devs-2015-model-based-trace-testing",
+            "order": 13,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "sesena-2013-formal-wsn-simulation",
+            "order": 14,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "sesena-2013-formal-wsn-simulation",
+            "order": 14,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "icsec-2017-effectiveness-ep-ctt-fta",
+            "order": 15,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "ncit-2017-prototype-use-case-development",
+            "order": 16,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "ncit-2017-automatic-tcgen-uat-sat",
+            "order": 17
+            ,
+            "isCorresponding": false
+        }
+    ]
+}

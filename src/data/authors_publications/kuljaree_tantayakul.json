@@ -1,0 +1,64 @@
+{
+    "person": {
+        "id": "kuljaree-tantayakul",
+        "name": "Asst.Prof.Dr. KULJAREE TANTAYAKUL",
+        "role": "Professor"
+    },
+    "authorships": [
+        {
+            "pubId": "ijacsa-2023-ontology-tcgen",
+            "order": 1,
+            "isCorresponding": true
+        },
+        {
+            "pubId": "scn-2022-anomalous-lan-dp",
+            "order": 2,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "ecti-con-2021-arp-dp-lan",
+            "order": 3,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "incit-2020-ml-ios-siam-betta",
+            "order": 4,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "ecti-con-2019-sdn-mobility-connected-vehicle",
+            "order": 5,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "nfv-sdn-2017-mobility-caching-sdn",
+            "order": 6,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "ecti-con-2017-experimental-analysis-sdn",
+            "order": 7,
+            "isCorresponding": true
+        },
+        {
+            "pubId": "aina-2016-impact-sdn-mobility",
+            "order": 8,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "mobility-2008-ipv6-at-home",
+            "order": 9,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "asiacsn-2007-mobility-mechanism-mipv4-mipv6",
+            "order": 10,
+            "isCorresponding": false
+        },
+        {
+            "pubId": "nac-2005-ipv6-site-renumbering",
+            "order": 11,
+            "isCorresponding": false
+        }
+    ]
+}
