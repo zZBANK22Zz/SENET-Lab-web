@@ -1,214 +1,144 @@
-import { useState } from 'react';
+// pages/PublicationPage.js
+// Drop-in replacement: อ่านข้อมูลจาก JSON ตามสคีมาที่ตกลงกันไว้
+
+import { useMemo, useState } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const PublicationPage = () => {
+// อ่านข้อมูลจากแคตตาล็อกจริง
+import publicationsData from "@/data/catalog/publications.json";
+import categoriesData from "@/data/catalog/categories.json";
+import topicsData from "@/data/catalog/topics.json";
+
+// NEW: import ข้อมูลคนจากโฟลเดอร์ people (ปรับชื่อไฟล์ให้ตรงโปรเจกต์จริง)
+import adisak from "@/data/people/adisak_intana.json";
+import kuljaree from "@/data/people/kuljaree_tantayakul.json";
+import wasimon from "@/data/people/wasimon_panichpattanakul.json";
+
+const monthNames = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const peopleFiles = [adisak, kuljaree, wasimon];
+
+export default function PublicationPage() {
+    // สร้างดัชนี lookup
+    const categories = useMemo(() => {
+        const base = [{ id: 'all', label: 'All Publications' }];
+        const fromFile = (categoriesData?.categories || []).map(c => ({ id: c.id, label: c.label }));
+        return [...base, ...fromFile];
+    }, []);
+
+    const topicMap = useMemo(() => {
+        const map = new Map();
+        (topicsData?.topics || []).forEach(t => map.set(t.id, t.label));
+        return map;
+    }, []);
+
+    const publications = useMemo(() => (publicationsData?.publications || []), []);
+
+    // ปีทั้งหมด (สำหรับฟิลเตอร์ปี)
+    const years = useMemo(() => {
+        const ys = Array.from(new Set(publications.map(p => p.year))).filter(Boolean).sort((a, b) => b - a);
+        return ['all', ...ys];
+    }, [publications]);
+
+    // NEW: รายชื่อผู้เขียนจากโฟลเดอร์ people
+    const peopleList = useMemo(() => {
+        return peopleFiles.map(f => ({
+            id: f.person?.id,
+            name: f.person?.name
+        })).filter(p => p.id && p.name);
+    }, []);
+
+    // NEW: map คน → เซ็ต pubId เพื่อเช็คกรองเร็ว ๆ
+    const pubIdsByPerson = useMemo(() => {
+        const m = new Map();
+        peopleFiles.forEach(f => {
+            const ids = new Set((f.authorships || []).map(a => a.pubId));
+            m.set(f.person?.id, ids);
+        });
+        return m;
+    }, []);
+
+
+    // สถานะฟิลเตอร์/ค้นหา
     const [selectedCategory, setSelectedCategory] = useState('all');
+    const [selectedYear, setSelectedYear] = useState('all');
+    const [selectedTag, setSelectedTag] = useState('all');
     const [searchTerm, setSearchTerm] = useState('');
+    // const [selectedAuthor, setSelectedAuthor] = useState('all');
+    const [selectedPersonId, setSelectedPersonId] = useState('all');
 
-    const categories = [
-        { id: 'all', name: 'All Publications' },
-        { id: 'software-architecture', name: 'Software Architecture' },
-        { id: 'network-security', name: 'Network Security' },
-        { id: 'ai-testing', name: 'AI-Driven Testing' },
-        { id: 'cloud-computing', name: 'Cloud Computing' },
-        { id: 'performance-analysis', name: 'Performance Analysis' },
-        { id: 'iot-systems', name: 'IoT Systems' }
-    ];
 
-    const publications = [
-        {
-            id: 1,
-            title: "Adaptive Microservices Architecture for Cloud-Native Applications",
-            authors: ["Dr. Sarah Chen", "Prof. Michael Rodriguez", "Dr. Alex Kumar"],
-            leadAuthor: {
-                name: "Dr. Sarah Chen",
-                image: "/images/justin.webp",
-                position: "Senior Research Scientist",
-                email: "s.chen@senetlab.edu"
-            },
-            journal: "IEEE Transactions on Software Engineering",
-            year: "2024",
-            month: "March",
-            category: "software-architecture",
-            citations: 23,
-            doi: "10.1109/TSE.2024.1234567",
-            abstract: "This paper presents a novel adaptive microservices architecture that automatically adjusts service granularity and deployment strategies based on runtime performance metrics and resource utilization patterns in cloud-native environments.",
-            keywords: ["Microservices", "Cloud Computing", "Adaptive Systems", "Performance Optimization"],
-            pages: "112-127",
-            volume: "50",
-            issue: "3"
-        },
-        {
-            id: 2,
-            title: "AI-Powered Network Intrusion Detection Using Deep Learning",
-            authors: ["Dr. Emily Watson", "Prof. David Kim", "Dr. James Thompson"],
-            leadAuthor: {
-                name: "Dr. Emily Watson",
-                image: "/images/justin.webp",
-                position: "Associate Professor",
-                email: "e.watson@senetlab.edu"
-            },
-            journal: "Journal of Network Security",
-            year: "2024",
-            month: "February",
-            category: "network-security",
-            citations: 41,
-            doi: "10.1016/j.netsc.2024.234567",
-            abstract: "We propose a deep learning-based intrusion detection system that combines convolutional and recurrent neural networks to identify sophisticated cyber attacks in real-time network traffic with 99.2% accuracy.",
-            keywords: ["Network Security", "Deep Learning", "Intrusion Detection", "Cybersecurity"],
-            pages: "45-62",
-            volume: "18",
-            issue: "2"
-        },
-        {
-            id: 3,
-            title: "Automated Test Case Generation Using Natural Language Processing",
-            authors: ["Dr. Lisa Park", "Prof. Robert Johnson", "Dr. Maria Garcia"],
-            leadAuthor: {
-                name: "Dr. Lisa Park",
-                image: "/images/justin.webp",
-                position: "Research Fellow",
-                email: "l.park@senetlab.edu"
-            },
-            journal: "ACM Transactions on Software Engineering",
-            year: "2023",
-            month: "December",
-            category: "ai-testing",
-            citations: 56,
-            doi: "10.1145/3456789.3456790",
-            abstract: "This work introduces an innovative approach to automated test case generation that leverages natural language processing to understand software requirements and generate comprehensive test suites automatically.",
-            keywords: ["Software Testing", "NLP", "Test Generation", "Automation"],
-            pages: "78-95",
-            volume: "29",
-            issue: "4"
-        },
-        {
-            id: 4,
-            title: "Edge Computing Optimization for IoT Applications",
-            authors: ["Dr. Kevin Zhang", "Prof. Amanda Foster", "Dr. Daniel Lee"],
-            leadAuthor: {
-                name: "Dr. Kevin Zhang",
-                image: "/images/justin.webp",
-                position: "Principal Research Scientist",
-                email: "k.zhang@senetlab.edu"
-            },
-            journal: "IEEE Internet of Things Journal",
-            year: "2023",
-            month: "November",
-            category: "iot-systems",
-            citations: 34,
-            doi: "10.1109/JIOT.2023.567890",
-            abstract: "We present a novel edge computing optimization framework specifically designed for IoT applications, reducing latency by 40% and improving energy efficiency in large-scale deployments.",
-            keywords: ["Edge Computing", "IoT", "Optimization", "Energy Efficiency"],
-            pages: "234-251",
-            volume: "10",
-            issue: "11"
-        },
-        {
-            id: 5,
-            title: "Quantum-Safe Communication Protocols for Modern Networks",
-            authors: ["Prof. Michael Rodriguez", "Dr. Emily Watson", "Dr. Alex Kumar"],
-            leadAuthor: {
-                name: "Prof. Michael Rodriguez",
-                image: "/images/justin.webp",
-                position: "Professor & Lab Director",
-                email: "m.rodriguez@senetlab.edu"
-            },
-            journal: "Nature Communications",
-            year: "2023",
-            month: "October",
-            category: "network-security",
-            citations: 78,
-            doi: "10.1038/s41467-023-12345-6",
-            abstract: "This paper introduces quantum-resistant cryptographic protocols that maintain security against both classical and quantum computing attacks while preserving network performance.",
-            keywords: ["Quantum Cryptography", "Network Security", "Post-Quantum", "Communication Protocols"],
-            pages: "1-12",
-            volume: "14",
-            issue: "1"
-        },
-        {
-            id: 6,
-            title: "Real-Time Performance Monitoring in Distributed Systems",
-            authors: ["Dr. James Thompson", "Dr. Sarah Chen", "Prof. David Kim"],
-            leadAuthor: {
-                name: "Dr. James Thompson",
-                image: "/images/justin.webp",
-                position: "Senior Researcher",
-                email: "j.thompson@senetlab.edu"
-            },
-            journal: "ACM Computing Surveys",
-            year: "2023",
-            month: "September",
-            category: "performance-analysis",
-            citations: 29,
-            doi: "10.1145/3567890.3567891",
-            abstract: "A comprehensive survey and novel framework for real-time performance monitoring in distributed systems, providing insights into bottleneck identification and automated optimization strategies.",
-            keywords: ["Performance Monitoring", "Distributed Systems", "Real-time Analysis", "Optimization"],
-            pages: "156-189",
-            volume: "55",
-            issue: "3"
-        },
-        {
-            id: 7,
-            title: "Serverless Architecture Patterns for Scalable Web Applications",
-            authors: ["Dr. Maria Garcia", "Dr. Kevin Zhang", "Prof. Amanda Foster"],
-            leadAuthor: {
-                name: "Dr. Maria Garcia",
-                image: "/images/justin.webp",
-                position: "Research Scientist",
-                email: "m.garcia@senetlab.edu"
-            },
-            journal: "IEEE Software",
-            year: "2023",
-            month: "August",
-            category: "cloud-computing",
-            citations: 67,
-            doi: "10.1109/MS.2023.789012",
-            abstract: "This study presents proven serverless architecture patterns that enable automatic scaling and cost optimization for web applications handling millions of concurrent users.",
-            keywords: ["Serverless Computing", "Web Applications", "Scalability", "Architecture Patterns"],
-            pages: "89-104",
-            volume: "40",
-            issue: "4"
-        },
-        {
-            id: 8,
-            title: "Machine Learning-Based Software Defect Prediction",
-            authors: ["Dr. Daniel Lee", "Dr. Lisa Park", "Prof. Robert Johnson"],
-            leadAuthor: {
-                name: "Dr. Daniel Lee",
-                image: "/images/justin.webp",
-                position: "Assistant Professor",
-                email: "d.lee@senetlab.edu"
-            },
-            journal: "Empirical Software Engineering",
-            year: "2023",
-            month: "July",
-            category: "ai-testing",
-            citations: 45,
-            doi: "10.1007/s10664-023-10123-4",
-            abstract: "We develop a machine learning framework that predicts software defects with 94% accuracy by analyzing code metrics, version control data, and developer interaction patterns.",
-            keywords: ["Machine Learning", "Defect Prediction", "Software Quality", "Code Analysis"],
-            pages: "67-89",
-            volume: "28",
-            issue: "4"
-        }
-    ];
+    // สถิติบน Hero
+    const stats = useMemo(() => {
+        const total = publications.length;
+        const venues = new Set(publications.map(p => p.venue).filter(Boolean));
+        const yearNums = publications.map(p => Number(p.year)).filter(n => !Number.isNaN(n));
+        const latestYear = yearNums.length ? Math.max(...yearNums) : new Date().getFullYear();
+        const latestYearCount = publications.filter(p => Number(p.year) === latestYear).length;
 
-    const filteredPublications = publications.filter(pub => {
-        const matchesCategory = selectedCategory === 'all' || pub.category === selectedCategory;
-        const matchesSearch = pub.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                             pub.authors.some(author => author.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                             pub.journal.toLowerCase().includes(searchTerm.toLowerCase());
-        return matchesCategory && matchesSearch;
-    });
+        return {
+            totalPublications: total,
+            uniqueVenues: venues.size,
+            latestYear,
+            latestYearCount
+        };
+    }, [publications]);
 
-    const stats = {
-        totalPublications: publications.length,
-        totalCitations: publications.reduce((sum, pub) => sum + pub.citations, 0),
-        avgCitations: Math.round(publications.reduce((sum, pub) => sum + pub.citations, 0) / publications.length),
-        currentYear: publications.filter(pub => pub.year === '2024').length
+    // ฟังก์ชันช่วยแสดงรายละเอียดฉบับ/หน้า
+    const detailsText = (p) => {
+        const parts = [];
+        if (p.volume) parts.push(`Vol. ${p.volume}`);
+        if (p.issue) parts.push(`Issue ${p.issue}`);
+        if (p.pages) parts.push(`pp. ${p.pages}`);
+        return parts.join(', ');
     };
+
+    // ตัวกรอง + เรียงลำดับ
+    const filteredPublications = useMemo(() => {
+        const q = searchTerm.trim().toLowerCase();
+
+        const matches = publications.filter(p => {
+            const byCategory = selectedCategory === 'all' || p.categoryId === selectedCategory;
+            const byYear = selectedYear === 'all' || String(p.year) === String(selectedYear);
+            const byTag = selectedTag === 'all' || (Array.isArray(p.tags) && p.tags.includes(selectedTag));
+
+            let bySearch = true;
+            if (q) {
+                const hay = [
+                    p.title || '',
+                    (p.displayCitation || ''),
+                    (p.venue || ''),
+                    ...(Array.isArray(p.authors) ? p.authors : []),
+                    ...(Array.isArray(p.tags) ? p.tags.map(tid => topicMap.get(tid) || tid) : [])
+                ].join(' ').toLowerCase();
+                bySearch = hay.includes(q);
+            }
+
+            // NEW: กรองด้วยผู้เขียนจาก people folder
+            const byAuthor =
+                selectedPersonId === 'all' ||
+                (pubIdsByPerson.get(selectedPersonId)?.has(p.id) === true);
+
+            // UPDATE: รวม byAuthor เข้าในเงื่อนไขเดิม
+            return byCategory && byYear && byTag && byAuthor && bySearch;
+        });
+
+        // เดิม
+        return matches.sort((a, b) => {
+            const ya = Number(a.year) || 0;
+            const yb = Number(b.year) || 0;
+            if (yb !== ya) return yb - ya;
+
+            const ma = Number(a.month) || 0;
+            const mb = Number(b.month) || 0;
+            if (mb !== ma) return mb - ma;
+
+            const ta = (a.title || '').toLowerCase();
+            const tb = (b.title || '').toLowerCase();
+            return ta.localeCompare(tb);
+        });
+    }, [publications, selectedCategory, selectedYear, selectedTag, selectedPersonId, searchTerm, topicMap, pubIdsByPerson]); // NEW: ใส่ selectedPersonId และ pubIdsByPerson ใน dependency
+
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -218,15 +148,13 @@ const PublicationPage = () => {
             <section className="bg-gray-50 py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-                            Publications
-                        </h1>
+                        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">Publications</h1>
                         <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-12">
-                            Discover our latest research contributions to software engineering and network technologies. 
-                            Our publications reflect our commitment to advancing the field through rigorous research 
+                            Discover our latest research contributions to software engineering and network technologies.
+                            Our publications reflect our commitment to advancing the field through rigorous research
                             and innovative solutions.
                         </p>
-                        
+
                         {/* Statistics */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
                             <div className="bg-white rounded-lg p-6 shadow-sm">
@@ -234,16 +162,16 @@ const PublicationPage = () => {
                                 <div className="text-sm text-gray-600">Total Publications</div>
                             </div>
                             <div className="bg-white rounded-lg p-6 shadow-sm">
-                                <div className="text-3xl font-bold text-gray-900 mb-2">{stats.totalCitations}</div>
-                                <div className="text-sm text-gray-600">Total Citations</div>
+                                <div className="text-3xl font-bold text-gray-900 mb-2">{stats.uniqueVenues}</div>
+                                <div className="text-sm text-gray-600">Unique Venues</div>
                             </div>
                             <div className="bg-white rounded-lg p-6 shadow-sm">
-                                <div className="text-3xl font-bold text-gray-900 mb-2">{stats.avgCitations}</div>
-                                <div className="text-sm text-gray-600">Avg. Citations</div>
+                                <div className="text-3xl font-bold text-gray-900 mb-2">{stats.latestYear}</div>
+                                <div className="text-sm text-gray-600">Latest Year</div>
                             </div>
                             <div className="bg-white rounded-lg p-6 shadow-sm">
-                                <div className="text-3xl font-bold text-gray-900 mb-2">{stats.currentYear}</div>
-                                <div className="text-sm text-gray-600">2024 Publications</div>
+                                <div className="text-3xl font-bold text-gray-900 mb-2">{stats.latestYearCount}</div>
+                                <div className="text-sm text-gray-600">{stats.latestYear} Publications</div>
                             </div>
                         </div>
                     </div>
@@ -255,7 +183,7 @@ const PublicationPage = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Search Bar */}
                     <div className="mb-8">
-                        <div className="relative max-w-md mx-auto">
+                        <div className="relative max-w-xl mx-auto">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -271,129 +199,161 @@ const PublicationPage = () => {
                         </div>
                     </div>
 
-                    {/* Category Filters */}
-                    <div className="flex flex-wrap justify-center gap-2 mb-12">
-                        {categories.map((category) => (
+                    {/* Category Chips */}
+                    <div className="flex flex-wrap justify-center gap-2 mb-6">
+                        {categories.map((c) => (
                             <button
-                                key={category.id}
-                                onClick={() => setSelectedCategory(category.id)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                                    selectedCategory === category.id
-                                        ? 'bg-gray-900 text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
+                                key={c.id}
+                                onClick={() => setSelectedCategory(c.id)}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedCategory === c.id ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    }`}
                             >
-                                {category.name}
+                                {c.label}
                             </button>
                         ))}
                     </div>
 
-                    {/* Publications Grid */}
-                    <div className="grid gap-8">
-                        {filteredPublications.map((publication) => (
-                            <div key={publication.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-6 md:p-8">
-                                <div className="flex flex-col lg:flex-row gap-6">
-                                    {/* Author Photo and Info */}
-                                    <div className="flex-shrink-0">
-                                        <div className="flex flex-col items-center text-center">
-                                            <img
-                                                src={publication.leadAuthor.image}
-                                                alt={publication.leadAuthor.name}
-                                                className="w-20 h-20 rounded-full object-cover border-4 border-gray-100 mb-3"
-                                            />
-                                            <h4 className="text-sm font-semibold text-gray-900 mb-1">
-                                                {publication.leadAuthor.name}
-                                            </h4>
-                                            <p className="text-xs text-gray-500 mb-2">
-                                                {publication.leadAuthor.position}
-                                            </p>
-                                            <a 
-                                                href={`mailto:${publication.leadAuthor.email}`}
-                                                className="text-xs text-gray-600 hover:text-gray-900 transition-colors"
-                                            >
-                                                {publication.leadAuthor.email}
-                                            </a>
-                                        </div>
-                                    </div>
+                    {/* Year & Tag Filters */}
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-12">
+                        <select
+                            className="w-full md:w-56 border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                            value={selectedYear}
+                            onChange={(e) => setSelectedYear(e.target.value)}
+                        >
+                            {years.map(y => (
+                                <option key={y} value={y}>{y === 'all' ? 'All Years' : y}</option>
+                            ))}
+                        </select>
 
-                                    {/* Publication Details */}
+                        <select
+                            className="w-full md:w-56 border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                            value={selectedTag}
+                            onChange={(e) => setSelectedTag(e.target.value)}
+                        >
+                            <option value="all">All Topics</option>
+                            {(topicsData?.topics || []).map(t => (
+                                <option key={t.id} value={t.id}>{t.label}</option>
+                            ))}
+                        </select>
+                        {/* NEW: Author filter dropdown */}
+                        <select
+                            className="w-full md:w-64 border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                            value={selectedPersonId}
+                            onChange={(e) => setSelectedPersonId(e.target.value)}
+                        >
+                            <option value="all">All Authors</option>
+                            {peopleList.map(p => (
+                                <option key={p.id} value={p.id}>{p.name}</option>
+                            ))}
+                        </select>
+                    </div>
+
+
+                    {/* Publications List */}
+                    <div className="grid gap-8">
+                        {filteredPublications.map((p) => {
+                            const categoryLabel = categories.find(cat => cat.id === p.categoryId)?.label || p.categoryId;
+                            const monthLabel = monthNames[Number(p.month)] || '';
+                            const tagLabels = (Array.isArray(p.tags) ? p.tags : []).map(tid => topicMap.get(tid) || tid);
+
+                            return (
+                                <div key={p.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-6 md:p-8">
                                     <div className="flex-1">
-                                        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+                                        {/* Title + Meta */}
+                                        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-3">
                                             <div className="flex-1">
-                                                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 leading-tight">
-                                                    {publication.title}
-                                                </h3>
-                                                <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
-                                                    <span className="font-medium">{publication.journal}</span>
-                                                    <span>•</span>
-                                                    <span>{publication.month} {publication.year}</span>
-                                                    <span>•</span>
-                                                    <span>{publication.citations} citations</span>
+                                                <h3 className="text-xl md:text-2xl font-bold text-gray-900 leading-tight mb-2">{p.title}</h3>
+                                                <div className="flex flex-wrap items-center gap-3 text-sm text-gray-600">
+                                                    {p.venue && <span className="font-medium">{p.venue}</span>}
+                                                    {(p.venueType || p.location) && <span>•</span>}
+                                                    {p.venueType && <span>{p.venueType}</span>}
+                                                    {p.location && <span>({p.location})</span>}
+                                                    {(p.year || p.month) && <span>•</span>}
+                                                    <span>{[monthLabel, p.year].filter(Boolean).join(' ')}</span>
                                                 </div>
                                             </div>
                                             <div className="flex-shrink-0">
                                                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                    {categories.find(cat => cat.id === publication.category)?.name || publication.category}
+                                                    {categoryLabel}
                                                 </span>
                                             </div>
                                         </div>
 
+                                        {/* Authors & Details */}
                                         <div className="mb-4">
-                                            <p className="text-gray-600 leading-relaxed mb-4">
-                                                {publication.abstract}
-                                            </p>
-                                            
-                                            <div className="grid md:grid-cols-2 gap-4 text-sm">
-                                                <div>
-                                                    <span className="font-medium text-gray-900">Authors:</span>
-                                                    <p className="text-gray-600 mt-1">
-                                                        {publication.authors.join(', ')}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <span className="font-medium text-gray-900">Publication Details:</span>
-                                                    <p className="text-gray-600 mt-1">
-                                                        Vol. {publication.volume}, Issue {publication.issue}, pp. {publication.pages}
-                                                    </p>
-                                                </div>
+                                            {Array.isArray(p.authors) && p.authors.length > 0 && (
+                                                <p className="text-sm text-gray-700"><span className="font-semibold">Authors: </span>{p.authors.join(', ')}</p>
+                                            )}
+                                            {(p.volume || p.issue || p.pages) && (
+                                                <p className="text-sm text-gray-700 mt-1"><span className="font-semibold">Publication Details: </span>{detailsText(p)}</p>
+                                            )}
+                                        </div>
+
+                                        {/* Display Citation (ถ้ามี) */}
+                                        {p.displayCitation && (
+                                            <p className="text-gray-600 leading-relaxed mb-4">{p.displayCitation}</p>
+                                        )}
+
+                                        {/* Tags */}
+                                        {tagLabels.length > 0 && (
+                                            <div className="flex flex-wrap gap-2 mb-6">
+                                                {tagLabels.map((lbl, i) => (
+                                                    <span key={`${p.id}-tag-${i}`} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                        {lbl}
+                                                    </span>
+                                                ))}
                                             </div>
-                                        </div>
+                                        )}
 
-                                        <div className="flex flex-wrap gap-2 mb-6">
-                                            {publication.keywords.map((keyword, index) => (
-                                                <span
-                                                    key={index}
-                                                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
-                                                >
-                                                    {keyword}
-                                                </span>
-                                            ))}
-                                        </div>
-
+                                        {/* Action Buttons */}
                                         <div className="flex flex-col sm:flex-row gap-3">
-                                            <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
-                                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                </svg>
-                                                Download PDF
-                                            </button>
-                                            <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
-                                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                                                </svg>
-                                                DOI: {publication.doi}
-                                            </button>
-                                            <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
-                                                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-                                                </svg>
-                                                Share
-                                            </button>
+                                            {p.urls?.landing && (
+                                                <a
+                                                    href={p.urls.landing}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                                                >
+                                                    {/* Link icon */}
+                                                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                                    </svg>
+                                                    View Article
+                                                </a>
+                                            )}
+                                            {p.urls?.pdf && (
+                                                <a
+                                                    href={p.urls.pdf}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                                                >
+                                                    {/* Download icon */}
+                                                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    </svg>
+                                                    Download PDF
+                                                </a>
+                                            )}
+                                            {p.urls?.doi && (
+                                                <a
+                                                    href={p.urls.doi}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+                                                >
+                                                    {/* DOI icon */}
+                                                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                                                    </svg>
+                                                    DOI
+                                                </a>
+                                            )}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
 
                     {filteredPublications.length === 0 && (
@@ -402,7 +362,6 @@ const PublicationPage = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
                             <h3 className="text-lg font-medium text-gray-900 mb-2">No publications found</h3>
-                            <p className="text-gray-600">Try adjusting your search terms or filters.</p>
                         </div>
                     )}
                 </div>
@@ -411,6 +370,4 @@ const PublicationPage = () => {
             <Footer />
         </div>
     );
-};
-
-export default PublicationPage;
+}
