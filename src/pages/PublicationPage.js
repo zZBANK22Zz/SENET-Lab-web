@@ -10,10 +10,10 @@ import publicationsData from "@/data/catalog/publications.json";
 import categoriesData from "@/data/catalog/categories.json";
 import topicsData from "@/data/catalog/topics.json";
 
-// NEW: import ข้อมูลคนจากโฟลเดอร์ people (ปรับชื่อไฟล์ให้ตรงโปรเจกต์จริง)
-import adisak from "@/data/people/adisak_intana.json";
-import kuljaree from "@/data/people/kuljaree_tantayakul.json";
-import wasimon from "@/data/people/wasimon_panichpattanakul.json";
+// NEW: import ข้อมูลคนจากโฟลเดอร์ authors_publications (ปรับชื่อไฟล์ให้ตรงโปรเจกต์จริง)
+import adisak from "@/data/authors_publications/adisak_intana.json";
+import kuljaree from "@/data/authors_publications/kuljaree_tantayakul.json";
+import wasimon from "@/data/authors_publications/wasimon_panichpattanakul.json";
 
 const monthNames = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const peopleFiles = [adisak, kuljaree, wasimon];
@@ -114,7 +114,7 @@ export default function PublicationPage() {
                 bySearch = hay.includes(q);
             }
 
-            // NEW: กรองด้วยผู้เขียนจาก people folder
+            // NEW: กรองด้วยผู้เขียนจาก authors_publications folder
             const byAuthor =
                 selectedPersonId === 'all' ||
                 (pubIdsByPerson.get(selectedPersonId)?.has(p.id) === true);
