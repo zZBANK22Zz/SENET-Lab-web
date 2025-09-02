@@ -118,15 +118,15 @@ const juniorStudents = [
   },
   {
     personalInfo: {
-      id: "chanakarn-khunkrai",
-      firstName: "Chanakarn",
-      lastName: "Khunkrai",
-      fullName: "Chanakarn Khunkrai",
-      title: "Ms.",
+      id: "Atsajan-Homprawong",
+      firstName: "Atsajan",
+      lastName: "Homprawong",
+      fullName: "Atsajan Homprawong",
+      title: "Mr.",
       position: "Undergraduate Research Assistant",
       department: "Digital Engineering",
-      email: "s6530613016@phuket.psu.ac.th",
-      profileImage: "/images/team/chanakarn.png",
+      email: "s6530613013@phuket.psu.ac.th",
+      profileImage: "/images/team/Atsajan.png",
       bio: "Undergraduate student passionate about web development and cloud technologies. Assisting in research projects while completing bachelor's degree.",
       researchInterests: ["Web Development"],
       supervisor: "Kuljaree Tantayakul",
@@ -134,9 +134,9 @@ const juniorStudents = [
       yearLevel: "4rd Year",
     },
     currentWork: {
-      title: "Stock Web Application",
+      title: "The development of Recommended for sport tourist",
       description:
-        "To create web application for stock management in Price of Songkhla University",
+        "The system uses Ontology and Semantic Web technologies (Apache Jena, SPARQL) to recommend restaurants based on cuisine type, location, and dietary needs of athletes (e.g., runners). Early results show the system can provide accurate and personalized restaurant suggestions.",
     },
   },
 ];
