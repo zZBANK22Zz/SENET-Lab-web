@@ -1,5 +1,3 @@
-// pages/TeamPage.js
-
 import { useState, useMemo } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -10,9 +8,30 @@ import {
   getTeamStatistics
 } from '@/data/personalData';
 
-// // หมายเหตุ:
-// // - ไม่มีการ import publicationsCatalogRaw / *_Authorships / wasimonPanichpattanakul ที่หน้านี้แล้ว
-// // - ไม่ต้องประกาศ computePubStats หรือ export getAllFaculty ในหน้านี้
+// helper: Gmail-only contact button
+const GmailButton = ({ email, small = false }) => {
+  const addr = (email || "").replace("(at)", "@").trim();
+  if (!addr) return null;
+
+  const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(addr)}`;
+  const sizeCls = small ? "px-2 py-1 text-xs" : "px-3 sm:px-4 py-2 text-xs sm:text-sm";
+  const iconCls = small ? "w-3 h-3 mr-1" : "w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2";
+
+  return (
+    <a
+      href={gmailLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center border border-gray-300 rounded-lg font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors ${sizeCls}`}
+    >
+      <svg className={iconCls} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+      Contact
+    </a>
+  );
+};
+
 
 const TeamPage = () => {
   const [activeSection, setActiveSection] = useState('all');
@@ -26,7 +45,7 @@ const TeamPage = () => {
   const sections = [
     { id: 'all', name: 'All Members', count: stats.totalMembers },
     { id: 'faculty', name: 'Faculty', count: stats.faculty },
-    { id: 'masters', name: 'Master Students', count: stats.masterStudents },
+    { id: 'masters', name: "Master Students", count: stats.masterStudents },
     { id: 'juniors', name: 'Undergraduate', count: stats.juniorStudents }
   ];
 
@@ -111,7 +130,7 @@ const TeamPage = () => {
                 Faculty & Lab Directors
               </h2>
 
-              {/* จุดแก้เพื่อให้ 3 ใบต่อแถว และกว้างขึ้น */}
+              {/* Professor */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
                 {faculty.map((member) => (
                   <div key={member.personalInfo.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-6 sm:p-8">
@@ -181,18 +200,9 @@ const TeamPage = () => {
                         );
                       })()}
 
-                      {/* Contact */}
-                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
-                        <a
-                          href={`mailto:${member.personalInfo.email}`}
-                          className="inline-flex items-center px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-                        >
-                          <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                          </svg>
-                          Contact
-                        </a>                      
-                      </div>
+                      <div className="flex justify-center">
+  <GmailButton email={member.personalInfo.email} />
+</div>
                     </div>
                   </div>
                 ))}
@@ -247,15 +257,9 @@ const TeamPage = () => {
                         </div>
                       </div>
 
-                      <a
-                        href={`mailto:${student.personalInfo.email}`}
-                        className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-                      >
-                        <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        Contact
-                      </a>
+                      <div className="flex justify-center">
+  <GmailButton email={student.personalInfo.email} />
+</div>
                     </div>
                   </div>
                 ))}
@@ -302,15 +306,9 @@ const TeamPage = () => {
                         </span>
                       </div>
 
-                      <a
-                        href={`mailto:${student.personalInfo.email}`}
-                        className="inline-flex items-center px-2 py-1 border border-gray-300 rounded-lg text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-                      >
-                        <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        Contact
-                      </a>
+                      <div className="flex justify-center">
+  <GmailButton email={student.personalInfo.email} small={true} />
+</div>
                     </div>
                   </div>
                 ))}
