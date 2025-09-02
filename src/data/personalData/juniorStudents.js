@@ -54,7 +54,7 @@ const juniorStudents = [
       title: "Mr.",
       position: "Undergraduate Research Assistant",
       department: "Degital Engineering",
-      email: "Pongsakorn10399@gmail.com",
+      email: "s6530613020@phuket.psu.ac.th",
       profileImage: "/images/team/pongsakorn.png",
       bio: "Undergraduate student passionate about web development and cloud technologies. Assisting in research projects while completing bachelor's degree.",
       researchInterests: ["Software Engineering"],
