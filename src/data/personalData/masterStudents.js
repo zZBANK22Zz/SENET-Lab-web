@@ -9,11 +9,11 @@ const masterStudents = [
       fullName: "Mr. Phone Myint Zaw",
       title: "Mr.",
       position: "Master's Student",
-      department: "College of Computing", // TODO: Update to the actual affiliation if different
+      department: "College of Computing",
       email: "6730621005@psu.ac.th", 
       profileImage: "/images/team/phone-myint-zaw.png",
       bio: "Master's student under the supervision of Asst.Prof.Dr. Adisak Intana.",
-      researchInterests: ["Artificial Intelligence"], // TODO: Fill in research interests when available
+      researchInterests: ["Artificial Intelligence"],
       advisor: "Asst.Prof.Dr. Adisak Intana",
       studentId: "6730621005",
       yearStarted: "2567", 
@@ -38,7 +38,7 @@ const masterStudents = [
       position: "Master's Student",
       department: "College of Computing",
       email: "6730621003@psu.ac.th", 
-      profileImage: "/images/team/aung-aung.png", // TODO: Upload the image / fix the path
+      profileImage: "/images/team/aung-aung.png",
       bio: "Master's student under the supervision of Asst.Prof.Dr. Kuljaree Tantayakul.",
       researchInterests: [
         "Software-Defined Networks (SDN)", "LISP", "IDPS", "Mobility Management", "Network & Security"
