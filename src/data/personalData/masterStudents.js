@@ -2,22 +2,22 @@
 
 const masterStudents = [
   {
-    personalInfo: {
-      id: "phone-myint-zaw",
+  personalInfo: {
+      id: "6730621005",
       firstName: "Phone Myint",
       lastName: "Zaw",
       fullName: "Mr. Phone Myint Zaw",
       title: "Mr.",
       position: "Master's Student",
-      department: "Software Engineering", // TODO: Update to the actual affiliation if different
-      email: "phone.myint.zaw@student.senetlab.edu", // TODO: Add the real email
-      profileImage: "/images/team/phone-myint-zaw.jpg", // TODO: Upload the image / fix the path
+      department: "College of Computing", // TODO: Update to the actual affiliation if different
+      email: "6730621005@psu.ac.th", 
+      profileImage: "/images/team/phone-myint-zaw.png",
       bio: "Master's student under the supervision of Asst.Prof.Dr. Adisak Intana.",
-      researchInterests: [], // TODO: Fill in research interests when available
+      researchInterests: ["Artificial Intelligence"], // TODO: Fill in research interests when available
       advisor: "Asst.Prof.Dr. Adisak Intana",
       studentId: "6730621005",
-      yearStarted: "2567", // TODO: Set the actual start year
-      expectedGraduation: null // TODO: Set the expected graduation year/term
+      yearStarted: "2567", 
+      expectedGraduation: "2569" 
     },
     currentProject: {
       title: "Master Thesis (TBD)", // TODO: Provide the actual research title
@@ -36,23 +36,22 @@ const masterStudents = [
       fullName: "Mr. Aung Aung",
       title: "Mr.",
       position: "Master's Student",
-      department: "Network Technologies & Security", // TODO: Update to the actual affiliation if different
-      email: "aung.aung@student.senetlab.edu", // TODO: Add the real email
-      profileImage: "/images/team/aung-aung.jpg", // TODO: Upload the image / fix the path
+      department: "College of Computing",
+      email: "6730621003@psu.ac.th", 
+      profileImage: "/images/team/aung-aung.png", // TODO: Upload the image / fix the path
       bio: "Master's student under the supervision of Asst.Prof.Dr. Kuljaree Tantayakul.",
       researchInterests: [
-        // Seed with keywords based on recent activities (BGP, Network Ops) so the UI can show tags immediately
-        "BGP & Routing", "Network Operations"
+        "Software-Defined Networks (SDN)", "LISP", "IDPS", "Mobility Management", "Network & Security"
       ],
       advisor: "Asst.Prof.Dr. Kuljaree Tantayakul",
       studentId: "6730621003",
-      yearStarted: "2567", // TODO: Set the actual start year
-      expectedGraduation: null // TODO: Set the expected graduation year/term
+      yearStarted: "2567", 
+      expectedGraduation: "2569" 
     },
     currentProject: {
       // Based on BGP training activities (THNICF/BKNIX funding) — use as a working title for now
-      title: "BGP Deployment & Troubleshooting (Working Title)",
-      description: "Attended BGP Deployment and Troubleshooting Workshop; BPF 2025 & ThaiNOG Day participation (THNICF/BKNIX full support)."
+      title: "Security and Mobility Enhancement in SDN Networks Using LISP and IDP",
+      description: "This thesis explores enhancing mobility and security in SDN networks by integrating LISP for seamless handovers and IDPS for real-time threat detection. The combined approach aims to provide efficient mobility management and strong protection against cyberattacks in dynamic network environments."
     },
     statistics: {
       publications: 0,
