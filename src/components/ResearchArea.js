@@ -25,10 +25,10 @@ export default function ResearchAreas() {
     <section id="research" className="py-12 sm:py-16 lg:py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 lg:mb-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gradient mb-4 lg:mb-6">
             Research Areas
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-blue-700 max-w-3xl mx-auto">
             Exploring innovative solutions in software engineering and network
             technologies
           </p>
@@ -38,15 +38,15 @@ export default function ResearchAreas() {
           {researchAreas.map((area, index) => (
             <div
               key={index}
-              className="bg-gray-50 rounded-xl p-6 lg:p-8 hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1"
+              className="bg-gradient-light rounded-xl p-6 lg:p-8 hover:shadow-primary transition-all duration-300 transform hover:-translate-y-1 border border-blue-100"
             >
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-900 rounded-lg flex items-center justify-center text-white mb-4 lg:mb-6">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-primary rounded-lg flex items-center justify-center text-white mb-4 lg:mb-6">
                 {area.icon}
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">
+              <h3 className="text-lg sm:text-xl font-semibold text-blue-800 mb-3 lg:mb-4">
                 {area.title}
               </h3>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+              <p className="text-sm sm:text-base text-blue-600 leading-relaxed">
                 {area.description}
               </p>
             </div>

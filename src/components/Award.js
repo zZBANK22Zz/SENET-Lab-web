@@ -50,13 +50,13 @@ export default function Awards() {
   };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+    <section className="py-12 sm:py-16 lg:py-20 bg-gradient-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 lg:mb-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gradient mb-4 lg:mb-6">
             Awards & Recognition
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600">
+          <p className="text-lg sm:text-xl text-blue-700">
             Our achievements in research excellence and innovation
           </p>
         </div>
@@ -66,11 +66,11 @@ export default function Awards() {
           {/* Navigation Arrows */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-primary hover:shadow-primary-lg transition-shadow"
             aria-label="Previous awards"
           >
             <svg
-              className="w-6 h-6 text-gray-600"
+              className="w-6 h-6 text-blue-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -86,11 +86,11 @@ export default function Awards() {
 
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-shadow"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-primary hover:shadow-primary-lg transition-shadow"
             aria-label="Next awards"
           >
             <svg
-              className="w-6 h-6 text-gray-600"
+              className="w-6 h-6 text-blue-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -112,17 +112,17 @@ export default function Awards() {
             >
               {awards.map((award, index) => (
                 <div key={index} className="w-1/3 flex-shrink-0 px-4">
-                  <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-shadow duration-300">
-                    <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 mb-6">
+                  <div className="bg-white rounded-2xl p-8 shadow-primary hover:shadow-primary-lg transition-shadow duration-300 border border-blue-100">
+                    <div className="w-16 h-16 bg-gradient-primary rounded-lg flex items-center justify-center text-white mb-6">
                       {award.icon}
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    <h3 className="text-xl font-semibold text-blue-800 mb-2">
                       {award.title}
                     </h3>
-                    <p className="text-sm font-medium text-gray-500 mb-4">
+                    <p className="text-sm font-medium text-blue-600 mb-4">
                       {award.subtitle}
                     </p>
-                    <p className="text-gray-600 leading-relaxed">
+                    <p className="text-blue-700 leading-relaxed">
                       {award.description}
                     </p>
                   </div>
@@ -139,7 +139,7 @@ export default function Awards() {
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   className={`w-3 h-3 rounded-full transition-colors ${
-                    currentSlide === index ? "bg-gray-900" : "bg-gray-300"
+                    currentSlide === index ? "bg-blue-600" : "bg-blue-300"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -151,17 +151,17 @@ export default function Awards() {
         {/* Mobile View - Stacked Cards */}
         <div className="md:hidden space-y-6">
           {awards.map((award, index) => (
-            <div key={index} className="bg-white rounded-2xl p-6 shadow-sm">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 mb-4 sm:mb-6">
+            <div key={index} className="bg-white rounded-2xl p-6 shadow-primary border border-blue-100">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-primary rounded-lg flex items-center justify-center text-white mb-4 sm:mb-6">
                 {award.icon}
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg sm:text-xl font-semibold text-blue-800 mb-2">
                 {award.title}
               </h3>
-              <p className="text-sm font-medium text-gray-500 mb-3 sm:mb-4">
+              <p className="text-sm font-medium text-blue-600 mb-3 sm:mb-4">
                 {award.subtitle}
               </p>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+              <p className="text-sm sm:text-base text-blue-700 leading-relaxed">
                 {award.description}
               </p>
             </div>

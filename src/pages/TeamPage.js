@@ -50,17 +50,17 @@ const TeamPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-light">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+      <section className="bg-gradient-light py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gradient mb-6 sm:mb-8">
               Our Team
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-blue-700 max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed">
               Meet the brilliant minds behind SEnet Research Lab. Our diverse team of faculty,
               researchers, and students work together to push the boundaries of software engineering
               and network technologies.
@@ -319,12 +319,12 @@ const TeamPage = () => {
       </section>
 
       {/* Join Our Team CTA */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gray-900 text-white">
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-primary text-white">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
             Join Our Research Team
           </h2>
-          <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8">
+          <p className="text-lg sm:text-xl text-blue-200 mb-6 sm:mb-8">
             We're always looking for passionate researchers and students to join our lab.
             Explore opportunities to contribute to cutting-edge research in software engineering and network technologies.
           </p>

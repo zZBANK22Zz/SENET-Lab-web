@@ -93,17 +93,17 @@ const ResearchPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-light">
       <Navbar />
 
       {/* Hero Section - Mobile Responsive */}
-      <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
+      <section className="bg-gradient-light py-12 sm:py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 sm:mb-8">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gradient mb-6 sm:mb-8">
               Our Research
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed px-4">
+            <p className="text-base sm:text-lg lg:text-xl text-blue-700 max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed px-4">
               At SEnet Research Lab, we pursue cutting-edge research in software
               engineering and network technologies. Our interdisciplinary
               approach combines theoretical foundations with practical
@@ -113,11 +113,11 @@ const ResearchPage = () => {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-md sm:max-w-none mx-auto">
               <button
                 onClick={handlePublicationClick}
-                className="bg-gray-900 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium hover:bg-gray-800 transition-colors text-sm sm:text-base"
+                className="bg-gradient-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium hover:shadow-primary transition-all text-sm sm:text-base"
               >
                 Browse Publications
               </button>
-              <button className="border-2 border-gray-300 text-gray-700 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium hover:border-gray-900 hover:text-gray-900 transition-colors text-sm sm:text-base">
+              <button className="border-2 border-blue-300 text-blue-700 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium hover:border-blue-600 hover:text-blue-800 hover:bg-blue-50 transition-colors text-sm sm:text-base">
                 Research Collaborations
               </button>
             </div>
