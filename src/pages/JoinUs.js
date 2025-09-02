@@ -59,8 +59,8 @@ const JoinUs = () => {
               Get In Touch
             </h1>
             <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              Ready to collaborate or have questions about our research? <br/>We'd
-              love to hear from you.
+              Ready to collaborate or have questions about our research? <br />
+              We'd love to hear from you.
             </p>
 
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 max-w-3xl mx-auto transform hover:scale-105 transition-transform duration-300">
@@ -225,7 +225,11 @@ const JoinUs = () => {
                     Gmail Address
                   </label>
                   <h1 className="text-3xl text-center">
-                    <a href={`mailto:senet@phuket.psu.ac.th`}>
+                    <a
+                      href="https://mail.google.com/mail/?view=cm&fs=1&to=senet@phuket.psu.ac.th"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       senet@phuket.psu.ac.th
                     </a>
                   </h1>
@@ -244,7 +248,9 @@ const JoinUs = () => {
                     Facebook Profile
                   </label>
                   <h1 className="text-3xl text-center">
-                    <a href={process.env.NEXT_PUBLIC_FB_URL}>SENET Research Lab</a>
+                    <a href={process.env.NEXT_PUBLIC_FB_URL}>
+                      SENET Research Lab
+                    </a>
                   </h1>
                 </div>
 
@@ -334,10 +340,9 @@ const JoinUs = () => {
               {/* Quick Contact Info */}
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mt-8">
                 <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-                  We're here to help and answer any question you might have.
-                  We look forward to hearing from you!
+                  We're here to help and answer any question you might have. We
+                  look forward to hearing from you!
                 </h4>
-
               </div>
             </div>
           </div>
