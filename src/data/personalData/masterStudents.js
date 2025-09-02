@@ -1,95 +1,62 @@
+// src/data/personalData/masterStudents.js
+
 const masterStudents = [
   {
     personalInfo: {
-      id: "somchai-somsuk",
-      firstName: "Somchai",
-      lastName: "Somsuk",
-      fullName: "Somchai Somsuk",
+      id: "phone-myint-zaw",
+      firstName: "Phone Myint",
+      lastName: "Zaw",
+      fullName: "Mr. Phone Myint Zaw",
       title: "Mr.",
       position: "Master's Student",
-      department: "Software Engineering",
-      email: "somchai.s@student.senetlab.edu",
-      profileImage: "/images/team/somchai-somsuk.jpg",
-      bio: "Master's student focusing on microservices architecture and cloud computing. Currently working on thesis about adaptive service mesh technologies.",
-      researchInterests: [
-        "Microservices Architecture",
-        "Service Mesh",
-        "Cloud Computing",
-        "DevOps"
-      ],
+      department: "Software Engineering", // TODO: Update to the actual affiliation if different
+      email: "phone.myint.zaw@student.senetlab.edu", // TODO: Add the real email
+      profileImage: "/images/team/phone-myint-zaw.jpg", // TODO: Upload the image / fix the path
+      bio: "Master's student under the supervision of Asst.Prof.Dr. Adisak Intana.",
+      researchInterests: [], // TODO: Fill in research interests when available
       advisor: "Asst.Prof.Dr. Adisak Intana",
-      yearStarted: "2023",
-      expectedGraduation: "2025"
+      studentId: "6730621005",
+      yearStarted: "2567", // TODO: Set the actual start year
+      expectedGraduation: null // TODO: Set the expected graduation year/term
     },
     currentProject: {
-      title: "Adaptive Service Mesh for Microservices Performance Optimization",
-      description: "Research on intelligent service mesh configuration for improved microservices performance"
-    },
-    statistics: {
-      publications: 1,
-      conferences: 2
-    }
-  },
-  {
-    personalInfo: {
-      id: "pim-patsorn",
-      firstName: "Pim",
-      lastName: "Patsorn",
-      fullName: "Pim Patsorn",
-      title: "Ms.",
-      position: "Master's Student",
-      department: "Network Security",
-      email: "pim.p@student.senetlab.edu",
-      profileImage: "/images/team/pim-patsorn.jpg",
-      bio: "Master's student specializing in IoT security and blockchain applications. Passionate about developing secure communication protocols for smart devices.",
-      researchInterests: [
-        "IoT Security",
-        "Blockchain Technology",
-        "Smart Device Security",
-        "Wireless Network Security"
-      ],
-      advisor: "Asst.Prof.Dr. Kuljaree Tantayakul",
-      yearStarted: "2023",
-      expectedGraduation: "2025"
-    },
-    currentProject: {
-      title: "Blockchain-Based IoT Device Authentication Framework",
-      description: "Developing a decentralized authentication system for IoT devices using blockchain technology"
-    },
-    statistics: {
-      publications: 0,
-      conferences: 1
-    }
-  },
-  {
-    personalInfo: {
-      id: "niran-techno",
-      firstName: "Niran",
-      lastName: "Techno",
-      fullName: "Niran Techno",
-      title: "Mr.",
-      position: "Master's Student",
-      department: "AI & Testing",
-      email: "niran.t@student.senetlab.edu",
-      profileImage: "/images/team/niran-techno.jpg",
-      bio: "Master's student focusing on AI-driven software testing and quality assurance. Working on machine learning models for automated test case generation.",
-      researchInterests: [
-        "AI-Driven Testing",
-        "Machine Learning",
-        "Software Quality Assurance",
-        "Natural Language Processing"
-      ],
-      advisor: "Dr. Sarah Chen",
-      yearStarted: "2024",
-      expectedGraduation: "2026"
-    },
-    currentProject: {
-      title: "NLP-Based Automated Test Case Generation",
-      description: "Using natural language processing to generate comprehensive test cases from software requirements"
+      title: "Master Thesis (TBD)", // TODO: Provide the actual research title
+      description: "To be updated." // TODO: Provide the actual research description
     },
     statistics: {
       publications: 0,
       conferences: 0
+    }
+  },
+  {
+    personalInfo: {
+      id: "aung-aung",
+      firstName: "Aung",
+      lastName: "Aung",
+      fullName: "Mr. Aung Aung",
+      title: "Mr.",
+      position: "Master's Student",
+      department: "Network Technologies & Security", // TODO: Update to the actual affiliation if different
+      email: "aung.aung@student.senetlab.edu", // TODO: Add the real email
+      profileImage: "/images/team/aung-aung.jpg", // TODO: Upload the image / fix the path
+      bio: "Master's student under the supervision of Asst.Prof.Dr. Kuljaree Tantayakul.",
+      researchInterests: [
+        // Seed with keywords based on recent activities (BGP, Network Ops) so the UI can show tags immediately
+        "BGP & Routing", "Network Operations"
+      ],
+      advisor: "Asst.Prof.Dr. Kuljaree Tantayakul",
+      studentId: "6730621003",
+      yearStarted: "2567", // TODO: Set the actual start year
+      expectedGraduation: null // TODO: Set the expected graduation year/term
+    },
+    currentProject: {
+      // Based on BGP training activities (THNICF/BKNIX funding) — use as a working title for now
+      title: "BGP Deployment & Troubleshooting (Working Title)",
+      description: "Attended BGP Deployment and Troubleshooting Workshop; BPF 2025 & ThaiNOG Day participation (THNICF/BKNIX full support)."
+    },
+    statistics: {
+      publications: 0,
+      conferences: 1 // Count one training/conference activity (adjust as needed)
     }
   }
 ];
