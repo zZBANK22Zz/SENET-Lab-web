@@ -128,7 +128,7 @@ const juniorStudents = [
       email: "s6530613013@phuket.psu.ac.th",
       profileImage: "/images/team/Atsajan.png",
       bio: "Undergraduate student passionate about web development and cloud technologies. Assisting in research projects while completing bachelor's degree.",
-      researchInterests: ["Web Development"],
+      researchInterests: ["Software Engineering"],
       supervisor: "Kuljaree Tantayakul",
       yearStarted: "2024",
       yearLevel: "4rd Year",
