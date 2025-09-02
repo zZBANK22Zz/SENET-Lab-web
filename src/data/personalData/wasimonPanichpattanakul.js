@@ -8,8 +8,8 @@ const wasimonPanichpattanakul = {
     lastName: "Panichpattanakul",
     fullName: "Dr. Wasimon Panichpattanakul",
     title: "Dr.",
-    position: "Assistant Dean (Student Admission & International Activities)",
-    department: "College of Computing",
+    position: "Assistant Professor & Lab Co-Director",
+    department: "Network Technologies & Security",
     email: "wasimon.pa@phuket.psu.ac.th",
     phone: "+66 87-700-3770",
     officeRoom: null, // ใส่ห้องทำงานเมื่อทราบ เช่น "Room 4xx, Engineering Building"
