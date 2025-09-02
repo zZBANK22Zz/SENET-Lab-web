@@ -1,17 +1,24 @@
-import { useState } from 'react';
+// pages/TeamPage.js
+
+import { useState, useMemo } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { 
-  getAllFaculty, 
-  getAllMasterStudents, 
+import {
+  getAllFaculty,
+  getAllMasterStudents,
   getAllJuniorStudents,
-  getTeamStatistics 
+  getTeamStatistics
 } from '@/data/personalData';
+
+// // หมายเหตุ:
+// // - ไม่มีการ import publicationsCatalogRaw / *_Authorships / wasimonPanichpattanakul ที่หน้านี้แล้ว
+// // - ไม่ต้องประกาศ computePubStats หรือ export getAllFaculty ในหน้านี้
 
 const TeamPage = () => {
   const [activeSection, setActiveSection] = useState('all');
 
-  const faculty = getAllFaculty();
+  // // ใช้ data layer ที่คำนวณ IJ/IP/NP มาให้แล้ว
+  const faculty = useMemo(() => getAllFaculty(), []);
   const masterStudents = getAllMasterStudents();
   const juniorStudents = getAllJuniorStudents();
   const stats = getTeamStatistics();
@@ -35,11 +42,11 @@ const TeamPage = () => {
               Our Team
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed">
-              Meet the brilliant minds behind SEnet Research Lab. Our diverse team of faculty, 
-              researchers, and students work together to push the boundaries of software engineering 
+              Meet the brilliant minds behind SEnet Research Lab. Our diverse team of faculty,
+              researchers, and students work together to push the boundaries of software engineering
               and network technologies.
             </p>
-            
+
             {/* Team Statistics */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto">
               <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
@@ -87,11 +94,10 @@ const TeamPage = () => {
               <button
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
-                className={`px-4 lg:px-6 py-2 lg:py-3 rounded-lg font-medium transition-colors text-sm lg:text-base ${
-                  activeSection === section.id
+                className={`px-4 lg:px-6 py-2 lg:py-3 rounded-lg font-medium transition-colors text-sm lg:text-base ${activeSection === section.id
                     ? 'bg-gray-900 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                  }`}
               >
                 {section.name} ({section.count})
               </button>
@@ -104,7 +110,9 @@ const TeamPage = () => {
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">
                 Faculty & Lab Directors
               </h2>
-              <div className="grid sm:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
+
+              {/* จุดแก้เพื่อให้ 3 ใบต่อแถว และกว้างขึ้น */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
                 {faculty.map((member) => (
                   <div key={member.personalInfo.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-6 sm:p-8">
                     <div className="text-center">
@@ -125,12 +133,12 @@ const TeamPage = () => {
                       <p className="text-sm text-gray-600 leading-relaxed mb-4 sm:mb-6">
                         {member.personalInfo.bio}
                       </p>
-                      
+
                       {/* Research Interests */}
                       <div className="mb-4 sm:mb-6">
                         <h4 className="text-sm font-semibold text-gray-900 mb-2">Research Interests:</h4>
                         <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
-                          {member.personalInfo.researchInterests.slice(0, 3).map((interest, index) => (
+                          {member.personalInfo.researchInterests?.slice(0, 3).map((interest, index) => (
                             <span
                               key={index}
                               className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
@@ -141,23 +149,41 @@ const TeamPage = () => {
                         </div>
                       </div>
 
-                      {/* Statistics */}
-                      {member.statistics && (
-                        <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
-                          <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
-                            <div className="text-lg sm:text-xl font-bold text-gray-900">{member.statistics.totalPublications}</div>
-                            <div className="text-xs text-gray-600">Publications</div>
+                      {/* Statistics: IJ / IP / NP */}
+                      {member.statistics && (() => {
+                        const s = member.statistics;
+                        const metrics = [
+                          { value: s.internationalJournals, label1: 'International', label2: 'Journal' },
+                          { value: s.internationalConferences, label1: 'International', label2: 'Proceedings' },
+                          { value: s.nationalConferences, label1: 'National', label2: 'Proceedings' },
+                        ].filter(m => (m.value ?? 0) > 0);
+
+                        // ถ้าทั้งหมดเป็น 0 ไม่ต้องแสดงอะไร
+                        if (metrics.length === 0) return null;
+
+                        // ปรับจำนวนคอลัมน์ตามจำนวนกล่องที่เหลือ (1/2/3)
+                        const cols =
+                          metrics.length === 1 ? 'grid-cols-1'
+                            : metrics.length === 2 ? 'grid-cols-2'
+                              : 'grid-cols-3';
+
+                        return (
+                          <div className={`grid ${cols} gap-3 sm:gap-4 mb-4 sm:mb-6`}>
+                            {metrics.map((m, idx) => (
+                              <div key={idx} className="bg-gray-50 rounded-lg p-2 sm:p-3 text-center">
+                                <div className="text-lg sm:text-xl font-bold text-gray-900">{m.value}</div>
+                                <div className="text-[10px] sm:text-xs text-gray-600 leading-tight">
+                                  {m.label1}<br />{m.label2}
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                          <div className="bg-gray-50 rounded-lg p-2 sm:p-3">
-                            <div className="text-lg sm:text-xl font-bold text-gray-900">{member.statistics.totalCitations}</div>
-                            <div className="text-xs text-gray-600">Citations</div>
-                          </div>
-                        </div>
-                      )}
+                        );
+                      })()}
 
                       {/* Contact */}
                       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
-                        <a 
+                        <a
                           href={`mailto:${member.personalInfo.email}`}
                           className="inline-flex items-center px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
                         >
@@ -165,20 +191,7 @@ const TeamPage = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                           </svg>
                           Contact
-                        </a>
-                        {member.personalInfo.socialMedia?.googleScholar && (
-                          <a 
-                            href={member.personalInfo.socialMedia.googleScholar}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center px-3 sm:px-4 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-                          >
-                            <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 100 14 7 7 0 000-14z"/>
-                            </svg>
-                            Scholar
-                          </a>
-                        )}
+                        </a>                      
                       </div>
                     </div>
                   </div>
@@ -193,7 +206,7 @@ const TeamPage = () => {
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">
                 Master's Students
               </h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6">
                 {masterStudents.map((student) => (
                   <div key={student.personalInfo.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-6">
                     <div className="text-center">
@@ -211,8 +224,8 @@ const TeamPage = () => {
                       <p className="text-xs text-gray-500 mb-3">
                         Advisor: {student.personalInfo.advisor}
                       </p>
-                      
-                      {/* Current Project */}
+
+                      {/* Current Research */}
                       <div className="mb-4">
                         <h4 className="text-sm font-semibold text-gray-900 mb-2">Current Research:</h4>
                         <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
@@ -234,7 +247,7 @@ const TeamPage = () => {
                         </div>
                       </div>
 
-                      <a 
+                      <a
                         href={`mailto:${student.personalInfo.email}`}
                         className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-lg text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
                       >
@@ -274,7 +287,7 @@ const TeamPage = () => {
                       <p className="text-xs text-gray-500 mb-3">
                         Supervisor: {student.personalInfo.supervisor}
                       </p>
-                      
+
                       {/* Current Work */}
                       <div className="mb-3">
                         <p className="text-xs text-gray-600 leading-relaxed">
@@ -289,7 +302,7 @@ const TeamPage = () => {
                         </span>
                       </div>
 
-                      <a 
+                      <a
                         href={`mailto:${student.personalInfo.email}`}
                         className="inline-flex items-center px-2 py-1 border border-gray-300 rounded-lg text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
                       >
@@ -314,7 +327,7 @@ const TeamPage = () => {
             Join Our Research Team
           </h2>
           <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8">
-            We're always looking for passionate researchers and students to join our lab. 
+            We're always looking for passionate researchers and students to join our lab.
             Explore opportunities to contribute to cutting-edge research in software engineering and network technologies.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -1,95 +1,61 @@
+// src/data/personalData/masterStudents.js
+
 const masterStudents = [
   {
-    personalInfo: {
-      id: "somchai-somsuk",
-      firstName: "Somchai",
-      lastName: "Somsuk",
-      fullName: "Somchai Somsuk",
+  personalInfo: {
+      id: "6730621005",
+      firstName: "Phone Myint",
+      lastName: "Zaw",
+      fullName: "Mr. Phone Myint Zaw",
       title: "Mr.",
       position: "Master's Student",
-      department: "Software Engineering",
-      email: "somchai.s@student.senetlab.edu",
-      profileImage: "/images/team/somchai-somsuk.jpg",
-      bio: "Master's student focusing on microservices architecture and cloud computing. Currently working on thesis about adaptive service mesh technologies.",
-      researchInterests: [
-        "Microservices Architecture",
-        "Service Mesh",
-        "Cloud Computing",
-        "DevOps"
-      ],
+      department: "College of Computing", // TODO: Update to the actual affiliation if different
+      email: "6730621005@psu.ac.th", 
+      profileImage: "/images/team/phone-myint-zaw.png",
+      bio: "Master's student under the supervision of Asst.Prof.Dr. Adisak Intana.",
+      researchInterests: ["Artificial Intelligence"], // TODO: Fill in research interests when available
       advisor: "Asst.Prof.Dr. Adisak Intana",
-      yearStarted: "2023",
-      expectedGraduation: "2025"
+      studentId: "6730621005",
+      yearStarted: "2567", 
+      expectedGraduation: "2569" 
     },
     currentProject: {
-      title: "Adaptive Service Mesh for Microservices Performance Optimization",
-      description: "Research on intelligent service mesh configuration for improved microservices performance"
-    },
-    statistics: {
-      publications: 1,
-      conferences: 2
-    }
-  },
-  {
-    personalInfo: {
-      id: "pim-patsorn",
-      firstName: "Pim",
-      lastName: "Patsorn",
-      fullName: "Pim Patsorn",
-      title: "Ms.",
-      position: "Master's Student",
-      department: "Network Security",
-      email: "pim.p@student.senetlab.edu",
-      profileImage: "/images/team/pim-patsorn.jpg",
-      bio: "Master's student specializing in IoT security and blockchain applications. Passionate about developing secure communication protocols for smart devices.",
-      researchInterests: [
-        "IoT Security",
-        "Blockchain Technology",
-        "Smart Device Security",
-        "Wireless Network Security"
-      ],
-      advisor: "Asst.Prof.Dr. Kuljaree Tantayakul",
-      yearStarted: "2023",
-      expectedGraduation: "2025"
-    },
-    currentProject: {
-      title: "Blockchain-Based IoT Device Authentication Framework",
-      description: "Developing a decentralized authentication system for IoT devices using blockchain technology"
-    },
-    statistics: {
-      publications: 0,
-      conferences: 1
-    }
-  },
-  {
-    personalInfo: {
-      id: "niran-techno",
-      firstName: "Niran",
-      lastName: "Techno",
-      fullName: "Niran Techno",
-      title: "Mr.",
-      position: "Master's Student",
-      department: "AI & Testing",
-      email: "niran.t@student.senetlab.edu",
-      profileImage: "/images/team/niran-techno.jpg",
-      bio: "Master's student focusing on AI-driven software testing and quality assurance. Working on machine learning models for automated test case generation.",
-      researchInterests: [
-        "AI-Driven Testing",
-        "Machine Learning",
-        "Software Quality Assurance",
-        "Natural Language Processing"
-      ],
-      advisor: "Dr. Sarah Chen",
-      yearStarted: "2024",
-      expectedGraduation: "2026"
-    },
-    currentProject: {
-      title: "NLP-Based Automated Test Case Generation",
-      description: "Using natural language processing to generate comprehensive test cases from software requirements"
+      title: "Master Thesis (TBD)", // TODO: Provide the actual research title
+      description: "To be updated." // TODO: Provide the actual research description
     },
     statistics: {
       publications: 0,
       conferences: 0
+    }
+  },
+  {
+    personalInfo: {
+      id: "aung-aung",
+      firstName: "Aung",
+      lastName: "Aung",
+      fullName: "Mr. Aung Aung",
+      title: "Mr.",
+      position: "Master's Student",
+      department: "College of Computing",
+      email: "6730621003@psu.ac.th", 
+      profileImage: "/images/team/aung-aung.png", // TODO: Upload the image / fix the path
+      bio: "Master's student under the supervision of Asst.Prof.Dr. Kuljaree Tantayakul.",
+      researchInterests: [
+        "Software-Defined Networks (SDN)", "LISP", "IDPS", "Mobility Management", "Network & Security"
+      ],
+      advisor: "Asst.Prof.Dr. Kuljaree Tantayakul",
+      studentId: "6730621003",
+      yearStarted: "2567", 
+      expectedGraduation: "2569" 
+    },
+    currentProject: {
+      // Based on BGP training activities (THNICF/BKNIX funding) — use as a working title for now
+      title: "Security and Mobility Enhancement in SDN Networks Using LISP and IDP",
+      description: "This thesis explores enhancing mobility and security in SDN networks by integrating LISP for seamless handovers and IDPS for real-time threat detection. The combined approach aims to provide efficient mobility management and strong protection against cyberattacks in dynamic network environments."
+    },
+    statistics: {
+      publications: 0,
+      conferences: 1 // Count one training/conference activity (adjust as needed)
     }
   }
 ];
