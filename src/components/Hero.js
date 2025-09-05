@@ -9,7 +9,7 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           <div className="text-center lg:text-left">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gradient mb-6 lg:mb-8 leading-tight">
-              SEnet Research Lab
+              SENET Research Lab
             </h1>
             <p className="text-lg sm:text-xl text-blue-700 mb-8 lg:mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
               Advancing the frontiers of Software Engineering and Network
