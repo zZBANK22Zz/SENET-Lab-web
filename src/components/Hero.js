@@ -1,6 +1,7 @@
 import { LibraryBig } from "lucide-react";
 import Router from "next/router";
 import PhotoSlideshow from "./PhotoSlideShow";
+import Image from "next/image";
 
 export default function Hero() {
   return (
@@ -8,8 +9,9 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           <div className="text-center lg:text-left">
+            <Image src="/images/logo/logo3.png" alt="SENET Logo" width={200} height={200} className="mx-auto lg:mx-0 mb-4"/>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gradient mb-6 lg:mb-8 leading-tight">
-              SENET Research Lab
+              SENET Research Team
             </h1>
             <p className="text-lg sm:text-xl text-blue-700 mb-8 lg:mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
               Advancing the frontiers of Software Engineering and Network
