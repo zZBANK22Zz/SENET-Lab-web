@@ -8,7 +8,7 @@ const wasimonPanichpattanakul = {
     lastName: "Panichpattanakul",
     fullName: "Dr. Wasimon Panichpattanakul",
     title: "Dr.",
-    position: "Assistant Professor & Lab Co-Director",
+    position: "Head of the Research Team",
     department: "Network Technologies & Security",
     email: "wasimon.pa@phuket.psu.ac.th",
     phone: "+66 87-700-3770",

@@ -8,7 +8,7 @@ const kuljareeTantayakul = {
     lastName: "Tantayakul",
     fullName: "Asst.Prof.Dr. Kuljaree Tantayakul",
     title: "Asst.Prof.Dr.",
-    position: "Assistant Professor & Lab Co-Director",
+    position: "Head of the Research Team",
     department: "Network Technologies & Security",
     email: "kuljaree.t(at)phuket.psu.ac.th",
     phone: "+66 76-27(6712)",
