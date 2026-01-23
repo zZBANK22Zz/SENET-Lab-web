@@ -50,81 +50,68 @@ export default function Awards() {
   };
 
   return (
-    <section className="py-12 sm:py-16 lg:py-20 bg-gradient-light">
+    <section className="py-24 lg:py-32 bg-bg-off">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gradient mb-4 lg:mb-6">
-            Awards & Recognition
+        <div className="text-center mb-16 lg:mb-24">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-main mb-6 tracking-tight">
+            Awards & <span className="text-gradient-official">Recognition</span>
           </h2>
-          <p className="text-lg sm:text-xl text-blue-700">
-            Our achievements in research excellence and innovation
+          <p className="text-lg text-text-muted max-w-2xl mx-auto leading-relaxed">
+            Our commitment to excellence has been recognized through numerous 
+            prestigious awards and grants in the field of research.
           </p>
         </div>
 
         {/* Desktop Carousel */}
-        <div className="hidden md:block relative">
+        <div className="hidden md:block relative px-16">
           {/* Navigation Arrows */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-primary hover:shadow-primary-lg transition-shadow"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-border-light flex items-center justify-center text-primary-deep shadow-soft hover:shadow-lift hover:border-primary-action transition-all"
             aria-label="Previous awards"
           >
-            <svg
-              className="w-6 h-6 text-blue-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-primary hover:shadow-primary-lg transition-shadow"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white border border-border-light flex items-center justify-center text-primary-deep shadow-soft hover:shadow-lift hover:border-primary-action transition-all"
             aria-label="Next awards"
           >
-            <svg
-              className="w-6 h-6 text-blue-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
 
           {/* Awards Cards */}
-          <div className="overflow-hidden mx-12">
+          <div className="overflow-hidden">
             <div
-              className="flex transition-transform duration-300 ease-in-out"
+              className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 33.333}%)` }}
             >
               {awards.map((award, index) => (
                 <div key={index} className="w-1/3 flex-shrink-0 px-4">
-                  <div className="bg-white rounded-2xl p-8 shadow-primary hover:shadow-primary-lg transition-shadow duration-300 border border-blue-100">
-                    <div className="w-16 h-16 bg-gradient-primary rounded-lg flex items-center justify-center text-white mb-6">
+                  <div className="card-base p-10 h-full">
+                    <div className="w-14 h-14 bg-primary-soft rounded-xl flex items-center justify-center text-primary-deep mb-8">
                       {award.icon}
                     </div>
-                    <h3 className="text-xl font-semibold text-blue-800 mb-2">
+                    <span className="inline-block px-3 py-1 rounded-full bg-primary-soft text-primary-deep text-[10px] font-bold uppercase tracking-wider mb-4">
+                      {award.year}
+                    </span>
+                    <h3 className="text-xl font-bold text-text-main mb-3 leading-tight">
                       {award.title}
                     </h3>
-                    <p className="text-sm font-medium text-blue-600 mb-4">
-                      {award.subtitle}
-                    </p>
-                    <p className="text-blue-700 leading-relaxed">
+                    <p className="text-text-muted text-sm leading-relaxed mb-6">
                       {award.description}
                     </p>
+                    {award.fund && (
+                       <p className="text-xs font-semibold text-primary-action flex items-center gap-2">
+                         <span className="w-1 h-1 rounded-full bg-primary-action"></span>
+                         {award.fund}
+                       </p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -132,14 +119,14 @@ export default function Awards() {
           </div>
 
           {/* Slide Indicators */}
-          <div className="flex justify-center mt-8 space-x-2">
+          <div className="flex justify-center mt-12 space-x-3">
             {Array.from({ length: Math.max(1, awards.length - 2) }).map(
               (_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    currentSlide === index ? "bg-blue-600" : "bg-blue-300"
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    currentSlide === index ? "w-8 bg-primary-deep" : "w-2 bg-border-light"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -151,19 +138,26 @@ export default function Awards() {
         {/* Mobile View - Stacked Cards */}
         <div className="md:hidden space-y-6">
           {awards.map((award, index) => (
-            <div key={index} className="bg-white rounded-2xl p-6 shadow-primary border border-blue-100">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-primary rounded-lg flex items-center justify-center text-white mb-4 sm:mb-6">
+            <div key={index} className="card-base p-8">
+              <div className="w-12 h-12 bg-primary-soft rounded-lg flex items-center justify-center text-primary-deep mb-6">
                 {award.icon}
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-blue-800 mb-2">
-                {award.title}
-              </h3>
-              <p className="text-sm font-medium text-blue-600 mb-3 sm:mb-4">
-                {award.subtitle}
-              </p>
-              <p className="text-sm sm:text-base text-blue-700 leading-relaxed">
+              <div className="flex justify-between items-start mb-4">
+                <h3 className="text-lg font-bold text-text-main pr-4">
+                  {award.title}
+                </h3>
+                <span className="flex-shrink-0 px-2.5 py-1 rounded-full bg-primary-soft text-primary-deep text-[10px] font-bold uppercase tracking-wider">
+                  {award.year}
+                </span>
+              </div>
+              <p className="text-sm text-text-muted leading-relaxed mb-4">
                 {award.description}
               </p>
+              {award.fund && (
+                 <p className="text-xs font-semibold text-primary-action">
+                   {award.fund}
+                 </p>
+              )}
             </div>
           ))}
         </div>

@@ -1,6 +1,16 @@
 import { useState, useMemo } from 'react';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { 
+  Users, 
+  Mail, 
+  Linkedin, 
+  GraduationCap, 
+  Presentation, 
+  Search,
+  ArrowRight,
+  ChevronRight
+} from 'lucide-react';
 import {
   getAllFaculty,
   getAllMasterStudents,
@@ -8,39 +18,63 @@ import {
   getTeamStatistics
 } from '@/data/personalData';
 
-// helper: Gmail-only contact button
+// Helper: Social Icon Button
+const SocialIcon = ({ href, icon: Icon, label }) => {
+  if (!href) return null;
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-10 h-10 rounded-full bg-bg-off border border-border-light flex items-center justify-center text-text-muted hover:bg-primary-soft hover:text-primary-action hover:border-primary-action transition-all"
+      aria-label={label}
+    >
+      <Icon size={18} />
+    </a>
+  );
+};
+
+// Helper: Gmail-only contact button
 const GmailButton = ({ email, small = false }) => {
   const addr = (email || "").replace("(at)", "@").trim();
   if (!addr) return null;
 
   const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(addr)}`;
-  const sizeCls = small ? "px-2 py-1 text-xs" : "px-3 sm:px-4 py-2 text-xs sm:text-sm";
-  const iconCls = small ? "w-3 h-3 mr-1" : "w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2";
-
+  
   return (
     <a
       href={gmailLink}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center border border-gray-300 rounded-lg font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors ${sizeCls}`}
+      className={`btn-secondary flex items-center gap-2 ${small ? 'py-1.5 px-3 text-[11px]' : 'py-2 px-4 text-xs'}`}
     >
-      <svg className={iconCls} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-      </svg>
+      <Mail size={small ? 14 : 16} />
       Contact
     </a>
   );
 };
 
-
 const TeamPage = () => {
   const [activeSection, setActiveSection] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // // ใช้ data layer ที่คำนวณ IJ/IP/NP มาให้แล้ว
   const faculty = useMemo(() => getAllFaculty(), []);
-  const masterStudents = getAllMasterStudents();
-  const juniorStudents = getAllJuniorStudents();
-  const stats = getTeamStatistics();
+  const masterStudents = useMemo(() => getAllMasterStudents(), []);
+  const juniorStudents = useMemo(() => getAllJuniorStudents(), []);
+  const stats = useMemo(() => getTeamStatistics(), []);
+
+  // Filter function helper
+  const matchesSearch = (member) => {
+    const term = searchTerm.toLowerCase();
+    const name = member.personalInfo.fullName.toLowerCase();
+    const bio = (member.personalInfo.bio || "").toLowerCase();
+    const interests = (member.personalInfo.researchInterests || []).join(" ").toLowerCase();
+    return name.includes(term) || bio.includes(term) || interests.includes(term);
+  };
+
+  const filteredFaculty = faculty.filter(matchesSearch);
+  const filteredMasters = masterStudents.filter(matchesSearch);
+  const filteredJuniors = juniorStudents.filter(matchesSearch);
 
   const sections = [
     { id: 'all', name: 'All Members', count: stats.totalMembers },
@@ -49,160 +83,166 @@ const TeamPage = () => {
     { id: 'juniors', name: 'Undergraduate', count: stats.juniorStudents }
   ];
 
+  const showFaculty = activeSection === 'all' || activeSection === 'faculty';
+  const showMasters = activeSection === 'all' || activeSection === 'masters';
+  const showJuniors = activeSection === 'all' || activeSection === 'juniors';
+
+  const totalFilteredCount = 
+    (showFaculty ? filteredFaculty.length : 0) + 
+    (showMasters ? filteredMasters.length : 0) + 
+    (showJuniors ? filteredJuniors.length : 0);
+
   return (
-    <div className="min-h-screen bg-gradient-light">
+    <div className="min-h-screen bg-bg-off">
       <Navbar />
 
       {/* Hero Section */}
-      <section className="bg-gradient-light py-12 sm:py-16 lg:py-20">
+      <section className="bg-white py-20 lg:py-28 border-b border-border-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gradient mb-6 sm:mb-8">
-              Our Team
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-soft text-primary-deep text-xs font-semibold mb-6 tracking-wide uppercase">
+              <Users size={14} className="text-primary-action" />
+              Research Pioneers
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-main mb-8 tracking-tight">
+              Meet Our <span className="text-gradient-official">Expert Team</span>
             </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-blue-700 max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed">
-              Meet the brilliant minds behind SEnet Research Lab. Our diverse team of faculty,
-              researchers, and students work together to push the boundaries of software engineering
-              and network technologies.
+            <p className="text-lg text-text-muted max-w-3xl mx-auto mb-12 leading-relaxed">
+              Our diverse team of faculty, researchers, and students work together to push 
+              the boundaries of software engineering and network technologies.
             </p>
 
             {/* Team Statistics */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto">
-              <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">{stats.totalMembers}</div>
-                <div className="text-xs sm:text-sm text-gray-600">Total Members</div>
-              </div>
-              <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">{stats.faculty}</div>
-                <div className="text-xs sm:text-sm text-gray-600">Faculty</div>
-              </div>
-              <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">{stats.masterStudents}</div>
-                <div className="text-xs sm:text-sm text-gray-600">Master's</div>
-              </div>
-              <div className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">{stats.juniorStudents}</div>
-                <div className="text-xs sm:text-sm text-gray-600">Undergraduate</div>
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+              {[
+                { label: 'Total Members', value: stats.totalMembers },
+                { label: 'Faculty', value: stats.faculty },
+                { label: 'Master\'s', value: stats.masterStudents },
+                { label: 'Undergraduate', value: stats.juniorStudents },
+              ].map((stat, idx) => (
+                <div key={idx} className="card-base p-6 text-center bg-white">
+                  <div className="text-3xl font-bold text-primary-deep mb-1">{stat.value}</div>
+                  <div className="text-xs font-medium text-text-muted uppercase tracking-wider">{stat.label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Section Navigation */}
-      <section className="py-8 sm:py-12 bg-white">
+      {/* Section Navigation & Search */}
+      <section className="py-10 bg-white sticky top-20 z-40 border-b border-border-light shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Mobile: Dropdown */}
-          <div className="sm:hidden mb-8">
-            <select
-              value={activeSection}
-              onChange={(e) => setActiveSection(e.target.value)}
-              className="block w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
-            >
+          <div className="flex flex-col lg:flex-row gap-6 items-center">
+            {/* Search Bar */}
+            <div className="relative w-full lg:max-w-md">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <Search size={18} className="text-text-muted" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search by name or research topic..."
+                className="block w-full pl-11 pr-4 py-3 border border-border-light rounded-xl leading-5 bg-bg-off placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary-action focus:border-transparent transition-all"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            {/* Desktop Tabs */}
+            <div className="hidden lg:flex flex-1 justify-end gap-2">
               {sections.map((section) => (
-                <option key={section.id} value={section.id}>
-                  {section.name} ({section.count})
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Desktop: Button Tabs */}
-          <div className="hidden sm:flex flex-wrap justify-center gap-2 lg:gap-4 mb-8 sm:mb-12">
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => setActiveSection(section.id)}
-                className={`px-4 lg:px-6 py-2 lg:py-3 rounded-lg font-medium transition-colors text-sm lg:text-base ${activeSection === section.id
-                    ? 'bg-gray-900 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                <button
+                  key={section.id}
+                  onClick={() => setActiveSection(section.id)}
+                  className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
+                    activeSection === section.id
+                    ? 'bg-primary-deep text-white shadow-md'
+                    : 'bg-bg-off text-text-muted hover:bg-primary-soft hover:text-primary-deep'
                   }`}
+                >
+                  {section.name} <span className="opacity-60 ml-1 font-medium">{section.count}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile Dropdown */}
+            <div className="lg:hidden w-full">
+              <select
+                value={activeSection}
+                onChange={(e) => setActiveSection(e.target.value)}
+                className="block w-full px-4 py-3 border border-border-light rounded-xl bg-bg-off text-text-main focus:ring-2 focus:ring-primary-action outline-none"
               >
-                {section.name} ({section.count})
-              </button>
-            ))}
+                {sections.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name} ({s.count})</option>
+                ))}
+              </select>
+            </div>
           </div>
+        </div>
+      </section>
 
+      {/* Team Content */}
+      <section className="py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
           {/* Faculty Section */}
-          {(activeSection === 'all' || activeSection === 'faculty') && (
-            <div className="mb-12 lg:mb-16">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">
-                Faculty & Lab Directors
-              </h2>
-
-              {/* Professor */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
-                {faculty.map((member) => (
-                  <div key={member.personalInfo.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-6 sm:p-8">
-                    <div className="text-center">
-                      <img
-                        src={member.personalInfo.profileImage}
-                        alt={member.personalInfo.fullName}
-                        className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-gray-100 mb-4 sm:mb-6 mx-auto"
-                      />
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
+          {showFaculty && filteredFaculty.length > 0 && (
+            <div className="mb-24">
+              <div className="flex items-center gap-4 mb-12">
+                <h2 className="text-2xl font-bold text-text-main">Faculty & Lab Directors</h2>
+                <div className="h-px flex-1 bg-border-light"></div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredFaculty.map((member) => (
+                  <div key={member.personalInfo.id} className="card-base p-8 group">
+                    <div className="text-center relative">
+                      <div className="relative inline-block mb-8">
+                        <img
+                          src={member.personalInfo.profileImage}
+                          alt={member.personalInfo.fullName}
+                          className="w-32 h-32 rounded-3xl object-cover border-4 border-white shadow-lift mx-auto group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute -bottom-2 -right-2 bg-gradient-official text-white p-2 rounded-xl shadow-lg">
+                          <GraduationCap size={16} />
+                        </div>
+                      </div>
+                      
+                      <h3 className="text-xl font-bold text-text-main mb-1 group-hover:text-primary-deep transition-colors">
                         {member.personalInfo.fullName}
                       </h3>
-                      <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">
+                      <p className="text-sm font-bold text-primary-action uppercase tracking-wider mb-4">
                         {member.personalInfo.position}
                       </p>
-                      <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">
+                      <p className="text-sm text-text-muted italic mb-6">
                         {member.personalInfo.department}
                       </p>
-                      <p className="text-sm text-gray-600 leading-relaxed mb-4 sm:mb-6">
+                      
+                      <p className="text-sm text-text-muted leading-relaxed mb-8 line-clamp-3">
                         {member.personalInfo.bio}
                       </p>
 
-                      {/* Research Interests */}
-                      <div className="mb-4 sm:mb-6">
-                        <h4 className="text-sm font-semibold text-gray-900 mb-2">Research Interests:</h4>
-                        <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
-                          {member.personalInfo.researchInterests?.slice(0, 3).map((interest, index) => (
-                            <span
-                              key={index}
-                              className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
-                            >
-                              {interest}
-                            </span>
-                          ))}
-                        </div>
+                      {/* Research Stats */}
+                      <div className="grid grid-cols-3 gap-3 mb-8">
+                        {[
+                          { val: member.statistics?.internationalJournals || 0, label: 'Journals' },
+                          { val: member.statistics?.internationalConferences || 0, label: 'Confs' },
+                          { val: member.statistics?.totalCitations || 0, label: 'Citations' },
+                        ].map((s, i) => (
+                          <div key={i} className="bg-bg-off rounded-xl p-3 border border-transparent hover:border-primary-soft transition-colors">
+                            <div className="text-lg font-bold text-text-main">{s.val}</div>
+                            <div className="text-[10px] text-text-muted font-bold uppercase tracking-tight">{s.label}</div>
+                          </div>
+                        ))}
                       </div>
 
-                      {/* Statistics: IJ / IP / NP */}
-                      {member.statistics && (() => {
-                        const s = member.statistics;
-                        const metrics = [
-                          { value: s.internationalJournals, label1: 'International', label2: 'Journal' },
-                          { value: s.internationalConferences, label1: 'International', label2: 'Proceedings' },
-                          { value: s.nationalConferences, label1: 'National', label2: 'Proceedings' },
-                        ].filter(m => (m.value ?? 0) > 0);
-
-                        // ถ้าทั้งหมดเป็น 0 ไม่ต้องแสดงอะไร
-                        if (metrics.length === 0) return null;
-
-                        // ปรับจำนวนคอลัมน์ตามจำนวนกล่องที่เหลือ (1/2/3)
-                        const cols =
-                          metrics.length === 1 ? 'grid-cols-1'
-                            : metrics.length === 2 ? 'grid-cols-2'
-                              : 'grid-cols-3';
-
-                        return (
-                          <div className={`grid ${cols} gap-3 sm:gap-4 mb-4 sm:mb-6`}>
-                            {metrics.map((m, idx) => (
-                              <div key={idx} className="bg-gray-50 rounded-lg p-2 sm:p-3 text-center">
-                                <div className="text-lg sm:text-xl font-bold text-gray-900">{m.value}</div>
-                                <div className="text-[10px] sm:text-xs text-gray-600 leading-tight">
-                                  {m.label1}<br />{m.label2}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        );
-                      })()}
-
-                      <div className="flex justify-center">
-  <GmailButton email={member.personalInfo.email} />
-</div>
+                      <div className="flex justify-center items-center gap-3">
+                        <GmailButton email={member.personalInfo.email} />
+                        <SocialIcon 
+                          href={member.personalInfo.socialMedia?.linkedin} 
+                          icon={Linkedin} 
+                          label="LinkedIn Profile" 
+                        />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -211,55 +251,51 @@ const TeamPage = () => {
           )}
 
           {/* Master Students Section */}
-          {(activeSection === 'all' || activeSection === 'masters') && (
-            <div className="mb-12 lg:mb-16">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">
-                Master's Students
-              </h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6">
-                {masterStudents.map((student) => (
-                  <div key={student.personalInfo.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-6">
-                    <div className="text-center">
-                      <img
-                        src={student.personalInfo.profileImage}
-                        alt={student.personalInfo.fullName}
-                        className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-gray-100 mb-3 sm:mb-4 mx-auto"
-                      />
-                      <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1 sm:mb-2">
-                        {student.personalInfo.fullName}
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-2">
-                        {student.personalInfo.position}
-                      </p>
-                      <p className="text-xs text-gray-500 mb-3">
-                        Advisor: {student.personalInfo.advisor}
-                      </p>
-
-                      {/* Current Research */}
-                      <div className="mb-4">
-                        <h4 className="text-sm font-semibold text-gray-900 mb-2">Current Research:</h4>
-                        <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                          {student.currentProject.title}
-                        </p>
-                      </div>
-
-                      {/* Research Interests */}
-                      <div className="mb-4">
-                        <div className="flex flex-wrap gap-1 justify-center">
-                          {student.personalInfo.researchInterests.slice(0, 2).map((interest, index) => (
-                            <span
-                              key={index}
-                              className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800"
-                            >
-                              {interest}
-                            </span>
-                          ))}
+          {showMasters && filteredMasters.length > 0 && (
+            <div className="mb-24">
+              <div className="flex items-center gap-4 mb-12">
+                <h2 className="text-2xl font-bold text-text-main">Master's Students</h2>
+                <div className="h-px flex-1 bg-border-light"></div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-8">
+                {filteredMasters.map((student) => (
+                  <div key={student.personalInfo.id} className="card-base p-8 group">
+                    <div className="flex flex-col md:flex-row gap-8">
+                      <div className="flex-shrink-0 text-center">
+                        <img
+                          src={student.personalInfo.profileImage}
+                          alt={student.personalInfo.fullName}
+                          className="w-24 h-24 rounded-2xl object-cover border-4 border-white shadow-soft mx-auto group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-soft text-primary-deep text-[10px] font-bold uppercase tracking-wider">
+                          <GraduationCap size={12} />
+                          M.Eng Student
                         </div>
                       </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-text-main mb-1 group-hover:text-primary-deep transition-colors">
+                          {student.personalInfo.fullName}
+                        </h3>
+                        <p className="text-sm text-text-muted mb-4">
+                          Advisor: <span className="font-bold text-primary-action">{student.personalInfo.advisor}</span>
+                        </p>
 
-                      <div className="flex justify-center">
-  <GmailButton email={student.personalInfo.email} />
-</div>
+                        <div className="bg-bg-off rounded-2xl p-4 mb-6 border-l-4 border-primary-action">
+                          <h4 className="text-xs font-bold text-text-main uppercase tracking-widest mb-2">Research Focus</h4>
+                          <p className="text-sm text-text-muted leading-relaxed">
+                            {student.currentProject.title}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-4 mt-auto">
+                           <div className="flex flex-wrap gap-2">
+                             {student.personalInfo.researchInterests.slice(0, 2).map((int, i) => (
+                               <span key={i} className="text-[11px] font-bold text-text-muted opacity-60">#{int}</span>
+                             ))}
+                           </div>
+                           <GmailButton email={student.personalInfo.email} small />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -267,74 +303,115 @@ const TeamPage = () => {
             </div>
           )}
 
-          {/* Junior Students Section */}
-          {(activeSection === 'all' || activeSection === 'juniors') && (
-            <div className="mb-12 lg:mb-16">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">
-                Undergraduate Research Assistants
-              </h2>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
-                {juniorStudents.map((student) => (
-                  <div key={student.personalInfo.id} className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow p-4 sm:p-6">
+          {/* Undergraduate Section */}
+          {showJuniors && filteredJuniors.length > 0 && (
+            <div className="mb-24">
+              <div className="flex items-center gap-4 mb-12">
+                <h2 className="text-2xl font-bold text-text-main">Undergraduate Assistants</h2>
+                <div className="h-px flex-1 bg-border-light"></div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredJuniors.map((student) => (
+                  <div key={student.personalInfo.id} className="card-base p-6 group">
                     <div className="text-center">
                       <img
                         src={student.personalInfo.profileImage}
                         alt={student.personalInfo.fullName}
-                        className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-4 border-gray-100 mb-2 sm:mb-3 mx-auto"
+                        className="w-20 h-20 rounded-2xl object-cover border-2 border-white shadow-soft mx-auto mb-4 group-hover:scale-105 transition-transform duration-500"
                       />
-                      <h3 className="text-sm sm:text-base font-bold text-gray-900 mb-1">
+                      <h3 className="text-base font-bold text-text-main mb-1 group-hover:text-primary-deep transition-colors">
                         {student.personalInfo.fullName}
                       </h3>
-                      <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">
+                      <p className="text-xs font-bold text-primary-action uppercase tracking-widest mb-3">
                         {student.personalInfo.yearLevel}
                       </p>
-                      <p className="text-xs text-gray-500 mb-3">
-                        Supervisor: {student.personalInfo.supervisor}
-                      </p>
-
-                      {/* Current Work */}
-                      <div className="mb-3">
-                        <p className="text-xs text-gray-600 leading-relaxed">
+                      
+                      <div className="min-h-[60px] flex items-center justify-center mb-6">
+                        <p className="text-xs text-text-muted leading-relaxed line-clamp-3">
                           {student.currentWork.title}
                         </p>
                       </div>
 
-                      {/* Main Interest */}
-                      <div className="mb-3">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                          {student.personalInfo.researchInterests[0]}
-                        </span>
+                      <div className="pt-4 border-t border-border-light flex justify-center">
+                        <GmailButton email={student.personalInfo.email} small />
                       </div>
-
-                      <div className="flex justify-center">
-  <GmailButton email={student.personalInfo.email} small={true} />
-</div>
                     </div>
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* No Results */}
+          {totalFilteredCount === 0 && (
+            <div className="card-base py-24 text-center bg-white">
+              <div className="w-20 h-20 bg-primary-soft rounded-full flex items-center justify-center text-primary-deep mx-auto mb-6">
+                <Search size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-text-main mb-2">No team members found</h3>
+              <p className="text-text-muted">Try adjusting your search or switching categories</p>
+              <button 
+                onClick={() => {
+                  setSearchTerm('');
+                  setActiveSection('all');
+                }}
+                className="mt-8 text-primary-action font-bold hover:underline flex items-center gap-2 mx-auto"
+              >
+                Clear all filters
+                <ArrowRight size={16} />
+              </button>
             </div>
           )}
         </div>
       </section>
 
       {/* Join Our Team CTA */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-primary text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
-            Join Our Research Team
-          </h2>
-          <p className="text-lg sm:text-xl text-blue-200 mb-6 sm:mb-8">
-            We're always looking for passionate researchers and students to join our lab.
-            Explore opportunities to contribute to cutting-edge research in software engineering and network technologies.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-gray-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-sm sm:text-base font-semibold hover:bg-gray-100 transition-colors">
-              Graduate Opportunities
-            </button>
-            <button className="border-2 border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg text-sm sm:text-base font-semibold hover:bg-white hover:text-gray-900 transition-colors">
-              Research Positions
-            </button>
+      <section className="pb-24 lg:pb-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-primary-deep rounded-[2.5rem] overflow-hidden relative">
+            {/* Background elements */}
+            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary-action/20 to-transparent"></div>
+            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary-action/20 rounded-full blur-3xl"></div>
+            
+            <div className="relative py-20 px-8 lg:px-20 text-center lg:text-left flex flex-col lg:flex-row items-center gap-12">
+              <div className="lg:flex-1">
+                <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+                  Start Your <span className="text-blue-400">Research Journey</span> With Us
+                </h2>
+                <p className="text-lg text-blue-100/80 mb-8 max-w-2xl">
+                  We're always looking for passionate researchers and students to join our lab. 
+                  Collaborate on cutting-edge projects in software engineering and network technologies.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                  <button className="btn-primary py-4 px-8 text-base">
+                    View Graduate Opportunities
+                    <ChevronRight size={18} />
+                  </button>
+                  <button className="btn-secondary py-4 px-8 text-base text-white border-white/20 hover:bg-white/10">
+                    Open Research Positions
+                  </button>
+                </div>
+              </div>
+              
+              <div className="hidden lg:block w-72 h-72 bg-white/5 rounded-[3rem] p-8 border border-white/10 backdrop-blur-sm">
+                <div className="flex flex-col h-full justify-between">
+                  <div className="flex -space-x-3">
+                    {[1,2,3,4].map(i => (
+                      <div key={i} className="w-12 h-12 rounded-full border-2 border-primary-deep bg-primary-soft p-1">
+                        <Users size={20} className="text-primary-deep m-auto mt-1.5" />
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    <div className="text-4xl font-bold text-white mb-1">15+</div>
+                    <div className="text-blue-200 text-sm font-medium">Active Researchers</div>
+                  </div>
+                  <div className="h-2 w-full bg-white/10 rounded-full">
+                    <div className="h-full w-3/4 bg-primary-action rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

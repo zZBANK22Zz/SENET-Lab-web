@@ -1,15 +1,97 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { 
+  Send, 
+  Mail, 
+  MapPin, 
+  Facebook, 
+  ChevronDown, 
+  ChevronUp, 
+  BookOpen, 
+  GraduationCap, 
+  Microscope,
+  CheckCircle2,
+  MessageSquare
+} from 'lucide-react';
+
+const OpportunityCard = ({ title, icon: Icon, requirements, benefits }) => (
+  <div className="card-base p-8 group">
+    <div className="w-14 h-14 bg-primary-soft rounded-2xl flex items-center justify-center text-primary-deep mb-6 group-hover:bg-gradient-official group-hover:text-white transition-all duration-300">
+      <Icon size={24} />
+    </div>
+    <h3 className="text-xl font-bold text-text-main mb-6">{title}</h3>
+    
+    <div className="space-y-6">
+      <div>
+        <h4 className="text-xs font-bold text-primary-action uppercase tracking-widest mb-3">Requirements</h4>
+        <ul className="space-y-2">
+          {requirements.map((req, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-text-muted">
+              <CheckCircle2 size={14} className="text-primary-action mt-0.5 flex-shrink-0" />
+              {req}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h4 className="text-xs font-bold text-primary-action uppercase tracking-widest mb-3">Key Benefits</h4>
+        <ul className="space-y-2">
+          {benefits.map((ben, i) => (
+            <li key={i} className="flex items-start gap-2 text-sm text-text-muted">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary-soft border border-primary-action mt-1.5 flex-shrink-0" />
+              {ben}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+);
+
+const FAQItem = ({ question, answer }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="border-b border-border-light last:border-0">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full py-6 flex items-center justify-between text-left hover:text-primary-action transition-colors"
+      >
+        <span className="text-base font-bold text-text-main">{question}</span>
+        {isOpen ? <ChevronUp size={20} className="text-primary-action" /> : <ChevronDown size={20} className="text-text-muted" />}
+      </button>
+      <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-96 pb-6' : 'max-h-0'}`}>
+        <p className="text-sm text-text-muted leading-relaxed">
+          {answer}
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const JoinUs = () => {
   const [formData, setFormData] = useState({
-    gmail: "",
-    facebook: "",
+    name: "",
     email: "",
+    subject: "general",
+    message: "",
   });
 
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+    if (!formData.message.trim()) newErrors.message = "Message is required";
+    return newErrors;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,339 +99,310 @@ const JoinUs = () => {
       ...prev,
       [name]: value,
     }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     setIsSubmitting(true);
     // Simulate form submission
     setTimeout(() => {
       console.log("Form submitted:", formData);
-      alert("Message sent successfully!");
       setIsSubmitting(false);
-      // Reset form
-      setFormData({ gmail: "", facebook: "", email: "" });
-    }, 1000);
+      setSubmitted(true);
+      setFormData({ name: "", email: "", subject: "general", message: "" });
+      // Reset success message after 5 seconds
+      setTimeout(() => setSubmitted(false), 5000);
+    }, 1500);
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-bg-off">
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header Section */}
-          <div className="text-center mb-16">
-            <div className="inline-block p-2 bg-blue-100 rounded-full mb-4">
-              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-              </div>
+      
+      {/* Hero Section */}
+      <section className="bg-white py-20 lg:py-28 border-b border-border-light">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-soft text-primary-deep text-xs font-semibold mb-6 tracking-wide uppercase">
+              <MessageSquare size={14} className="text-primary-action" />
+              Join the Innovation
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
-              Get In Touch
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-main mb-8 tracking-tight">
+              Let's <span className="text-gradient-official">Innovate Together</span>
             </h1>
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              Ready to collaborate or have questions about our research? <br />
-              We'd love to hear from you.
+            <p className="text-lg text-text-muted max-w-3xl mx-auto leading-relaxed">
+              Whether you're a prospective student, a researcher, or a potential collaborator, 
+              we'd love to hear from you. We are always looking for passionate minds to join our journey.
             </p>
+          </div>
+        </div>
+      </section>
 
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 max-w-3xl mx-auto transform hover:scale-105 transition-transform duration-300">
-              <div className="flex items-center justify-center mb-4">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-8 h-8 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                SENET Research Laboratory
-              </h2>
-              <div className="space-y-2 text-gray-600">
-                <p className="flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 mr-2 text-blue-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                  College of Computing, Prince of Songkla University
-                </p>
-                <p className="flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 mr-2 text-blue-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                    />
-                  </svg>
-                  Phuket Campus 80, M.1 Vichitsongkram Road
-                </p>
-                <p className="flex items-center justify-center">
-                  <svg
-                    className="w-5 h-5 mr-2 text-blue-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M3 7l9 6 9-6"
-                    />
-                  </svg>
-                  Kathu, Phuket 83120
-                </p>
-              </div>
-            </div>
+      {/* Research Opportunities track */}
+      <section className="py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-text-main mb-4">Research Tracks</h2>
+            <p className="text-text-muted">Find the right path for your academic and research goals.</p>
           </div>
 
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Map Section */}
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden transform hover:shadow-xl transition-shadow duration-300">
-              <div className="p-6 bg-gradient-to-r from-blue-50 to-purple-50">
-                <h3 className="text-xl font-semibold text-gray-800 flex items-center">
-                  <svg
-                    className="w-6 h-6 mr-2 text-blue-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                  Find Us Here
-                </h3>
-                <p className="text-gray-600 mt-1">Visit our campus location</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <OpportunityCard 
+              title="Undergraduate Research"
+              icon={BookOpen}
+              requirements={[
+                "3rd or 4th-year student in Computing/Software Eng",
+                "Minimum GPA of 3.00",
+                "Strong interest in Software Engineering or Networks"
+              ]}
+              benefits={[
+                "Hands-on experience with real-world research",
+                "Mentorship from faculty and senior students",
+                "Opportunities for publication and awards"
+              ]}
+            />
+            <OpportunityCard 
+              title="Graduate Studies"
+              icon={GraduationCap}
+              requirements={[
+                "B.Eng or B.Sc in related fields",
+                "Strong foundation in Computer Science",
+                "Proactive and self-motivated research mindset"
+              ]}
+              benefits={[
+                "Full or partial scholarship opportunities",
+                "Dedicated lab workspace and computing resources",
+                "Support for international conferences"
+              ]}
+            />
+            <OpportunityCard 
+              title="Post-Doc & Collaborations"
+              icon={Microscope}
+              requirements={[
+                "Ph.D. in Software Engineering, Networking, or AI",
+                "Proven track record of high-quality publications",
+                "Passion for leading research initiatives"
+              ]}
+              benefits={[
+                "Access to the lab's extensive network",
+                "Collaborative environment with industry partners",
+                "Opportunity to lead multi-disciplinary projects"
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 lg:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            
+            {/* Contact Information & Map */}
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-3xl font-bold text-text-main mb-6">Contact Information</h2>
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-primary-soft rounded-2xl flex items-center justify-center text-primary-action flex-shrink-0">
+                      <MapPin size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-text-main mb-1">Our Location</h4>
+                      <p className="text-sm text-text-muted leading-relaxed">
+                        College of Computing, Prince of Songkla University<br />
+                        Phuket Campus 80, M.1 Vichitsongkram Road<br />
+                        Kathu, Phuket 83120, Thailand
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-primary-soft rounded-2xl flex items-center justify-center text-primary-action flex-shrink-0">
+                      <Mail size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-text-main mb-1">Email Inquiry</h4>
+                      <a href="mailto:senet@phuket.psu.ac.th" className="text-sm text-primary-action hover:underline font-medium">
+                        senet@phuket.psu.ac.th
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-primary-soft rounded-2xl flex items-center justify-center text-primary-action flex-shrink-0">
+                      <Facebook size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-text-main mb-1">Facebook Profile</h4>
+                      <a href="https://facebook.com/senet.lab" className="text-sm text-primary-action hover:underline font-medium text-blue-600 transition-colors">
+                        SENET Research Lab
+                      </a>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <iframe
-                title="College of Computing, PSU Phuket"
-                src="https://www.google.com/maps?q=College%20of%20Computing%2C%20Prince%20of%20Songkla%20University%2C%20Phuket%20Campus%2080%2C%20M.1%20Vichitsongkram%20Road%2C%20Kathu%2C%20Phuket%2083120&z=17&iwloc=near&output=embed"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              <div className="p-3 bg-white border-t border-gray-100 text-right">
-                <a
-                  href="https://www.google.com/maps/search/?api=1&query=College%20of%20Computing%2C%20Prince%20of%20Songkla%20University%2C%20Phuket%20Campus%2080%2C%20M.1%20Vichitsongkram%20Road%2C%20Kathu%2C%20Phuket%2083120"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:text-blue-700"
-                >
-                  View on Google Maps
-                </a>
+
+              {/* Map Container */}
+              <div className="card-base h-[300px] overflow-hidden group border border-border-light rounded-3xl">
+                <iframe
+                  title="College of Computing, PSU Phuket"
+                  src="https://www.google.com/maps?q=College%20of%20Computing%2C%20Prince%20of%20Songkla%20University%2C%20Phuket%20Campus%2080%2C%20M.1%20Vichitsongkram%20Road%2C%20Kathu%2C%20Phuket%2083120&z=17&iwloc=near&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  className="grayscale group-hover:grayscale-0 transition-all duration-700"
+                />
               </div>
             </div>
 
-            {/* Contact Form Section */}
-            <div className="space-y-6">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                  Send us a Message
-                </h3>
-                <p className="text-gray-600">
-                  We'll get back to you as soon as possible
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                {/* Gmail Field */}
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 transform hover:shadow-xl transition-all duration-300">
-                  <label className="flex items-center text-lg font-semibold text-gray-700 mb-3">
-                    <svg
-                      className="w-5 h-5 mr-2 text-red-500"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C2,4.89 21.1,4 20,4Z" />
-                    </svg>
-                    Gmail Address
-                  </label>
-                  <h1 className="text-3xl text-center">
-                    <a
-                      href="https://mail.google.com/mail/?view=cm&fs=1&to=senet@phuket.psu.ac.th"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      senet@phuket.psu.ac.th
-                    </a>
-                  </h1>
-                </div>
-
-                {/* Facebook Field */}
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 transform hover:shadow-xl transition-all duration-300">
-                  <label className="flex items-center text-lg font-semibold text-gray-700 mb-3">
-                    <svg
-                      className="w-5 h-5 mr-2 text-blue-600"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                    </svg>
-                    Facebook Profile
-                  </label>
-                  <h1 className="text-3xl text-center">
-                    <a href={process.env.NEXT_PUBLIC_FB_URL}>
-                      SENET Research Lab
-                    </a>
-                  </h1>
-                </div>
-
-                {/* Email/Message Field */}
-                {/* <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 transform hover:shadow-xl transition-all duration-300">
-                  <label className="flex items-center text-lg font-semibold text-gray-700 mb-3">
-                    <svg
-                      className="w-5 h-5 mr-2 text-green-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                      />
-                    </svg>
-                    Your Message
-                  </label>
-                  <textarea
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    rows="5"
-                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700 placeholder-gray-400 resize-vertical transition-all duration-300"
-                    placeholder="Tell us about your project, questions, or how we can help you..."
-                  />
-                </div> */}
-
-                {/* Submit Button */}
-                {/* <div className="text-center pt-4">
-                  <button
-                    onClick={handleSubmit}
-                    disabled={isSubmitting}
-                    className="group relative bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-4 px-10 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            {/* Contact Form */}
+            <div className="card-base p-8 lg:p-12">
+              <h3 className="text-2xl font-bold text-text-main mb-8">Send Us a Message</h3>
+              
+              {submitted ? (
+                <div className="text-center py-12 animate-in fade-in zoom-in duration-500">
+                  <div className="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <CheckCircle2 size={40} />
+                  </div>
+                  <h4 className="text-xl font-bold text-text-main mb-2">Message Sent Successfully!</h4>
+                  <p className="text-text-muted">We'll get back to you as soon as possible.</p>
+                  <button 
+                    onClick={() => setSubmitted(false)}
+                    className="mt-8 text-primary-action font-bold hover:underline"
                   >
-                    <span className="flex items-center justify-center">
-                      {isSubmitting ? (
-                        <>
-                          <svg
-                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          <svg
-                            className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform duration-300"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                            />
-                          </svg>
-                          Send Message
-                        </>
-                      )}
-                    </span>
+                    Send another message
                   </button>
-                </div> */}
-              </div>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-2">Your Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className={`w-full px-4 py-3 border rounded-xl outline-none transition-all ${
+                          errors.name ? 'border-red-300 bg-red-50' : 'border-border-light bg-bg-off focus:border-primary-action focus:ring-4 focus:ring-primary-soft'
+                        }`}
+                        placeholder="John Doe"
+                      />
+                      {errors.name && <p className="text-[10px] text-red-500 mt-1 font-bold italic">{errors.name}</p>}
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-2">Email Address</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className={`w-full px-4 py-3 border rounded-xl outline-none transition-all ${
+                          errors.email ? 'border-red-300 bg-red-50' : 'border-border-light bg-bg-off focus:border-primary-action focus:ring-4 focus:ring-primary-soft'
+                        }`}
+                        placeholder="john@example.com"
+                      />
+                      {errors.email && <p className="text-[10px] text-red-500 mt-1 font-bold italic">{errors.email}</p>}
+                    </div>
+                  </div>
 
-              {/* Quick Contact Info */}
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mt-8">
-                <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-                  We're here to help and answer any question you might have. We
-                  look forward to hearing from you!
-                </h4>
-              </div>
+                  <div>
+                    <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-2">Inquiry Type</label>
+                    <select
+                      name="subject"
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-border-light bg-bg-off rounded-xl outline-none focus:border-primary-action focus:ring-4 focus:ring-primary-soft"
+                    >
+                      <option value="general">General Inquiry</option>
+                      <option value="collaboration">Research Collaboration</option>
+                      <option value="graduate">Graduate Admission</option>
+                      <option value="undergraduate">Undergraduate Research</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-2">Your Message</label>
+                    <textarea
+                      name="message"
+                      rows="5"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 border rounded-xl outline-none transition-all resize-none ${
+                        errors.message ? 'border-red-300 bg-red-50' : 'border-border-light bg-bg-off focus:border-primary-action focus:ring-4 focus:ring-primary-soft'
+                      }`}
+                      placeholder="How can we help you?"
+                    />
+                    {errors.message && <p className="text-[10px] text-red-500 mt-1 font-bold italic">{errors.message}</p>}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="btn-primary w-full py-4 justify-center shadow-lg shadow-primary-deep/10"
+                  >
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Sending...
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        <Send size={18} />
+                        Send Message
+                      </span>
+                    )}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 lg:py-32 bg-bg-off">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-text-main mb-4">Frequently Asked Questions</h2>
+            <p className="text-text-muted">Quick answers to common inquiries.</p>
+          </div>
+
+          <div className="space-y-2">
+            <FAQItem 
+              question="How can I join the lab as an undergraduate student?"
+              answer="Undergraduate students are encouraged to contact our faculty members or visit our lab during office hours. We usually look for students in their 3rd or 4th year who have completed core computer science courses and show a strong interest in our research areas."
+            />
+            <FAQItem 
+              question="Are there any scholarship opportunities for graduate students?"
+              answer="Yes, PSU Phuket and the SENET Lab often have research assistant ships and scholarships for qualified Master's and Ph.D. students. These are usually tied to specific research projects funded by external agencies."
+            />
+            <FAQItem 
+              question="Can I collaborate with the lab if I'm from industry?"
+              answer="Absolutely. We welcome industry collaborations and often work on projects that bridge academic research with industrial needs. Contact us via the form above with your proposed collaboration areas."
+            />
+            <FAQItem 
+              question="What is the response time for inquiries?"
+              answer="We typically aim to respond to all inquiries within 2-3 business days. If your inquiry is urgent, please mention it in the subject line."
+            />
+          </div>
+        </div>
+      </section>
+
       <Footer />
-    </>
+    </div>
   );
 };
 
