@@ -7,7 +7,7 @@ const adisakIntana = {
     lastName: "Intana",
     fullName: "Asst.Prof.Dr. Adisak Intana",
     title: "Asst.Prof.Dr.",
-    position: "Head of the Research Team",
+    position: "Assistant Professor & Lab Co-Director",
     department: "Software Engineering",
     email: "adisak.i(at)phuket.psu.ac.th",
     phone: "+66 76-27(6711)",
