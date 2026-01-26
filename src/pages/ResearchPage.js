@@ -37,11 +37,11 @@ const ResearchPage = () => {
           xmlns="http://www.w3.org/2000/svg"
           fill="#000000"
         >
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
           <g
             id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           ></g>
           <g id="SVGRepo_iconCarrier">
             {" "}
@@ -70,23 +70,7 @@ const ResearchPage = () => {
     categories: new Set(awards.map((award) => award.category)).size,
   };
 
-  const researchAreas = [
-    {
-      icon: Research[0].icon,
-      title: Research[0].title,
-      description: Research[0].description,
-    },
-    {
-      icon: Research[1].icon,
-      title: Research[1].title,
-      description: Research[1].description,
-    },
-    {
-      icon: Research[2].icon,
-      title: Research[2].title,
-      description: Research[2].description,
-    },
-  ];
+  const researchAreas = ResearchAreaData;
 
   const handlePublicationClick = () => {
     Router.push("/PublicationPage");
@@ -110,14 +94,17 @@ const ResearchPage = () => {
               applications to address real-world challenges in modern computing
               systems.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-md sm:max-w-none mx-auto">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button
                 onClick={handlePublicationClick}
-                className="bg-gradient-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium hover:shadow-primary transition-all text-sm sm:text-base"
+                className="btn-primary min-w-[200px]"
               >
                 Browse Publications
               </button>
-              <button className="border-2 border-blue-300 text-blue-700 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium hover:border-blue-600 hover:text-blue-800 hover:bg-blue-50 transition-colors text-sm sm:text-base">
+              <button 
+                onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+                className="btn-secondary min-w-[200px]"
+              >
                 Research Collaborations
               </button>
             </div>
@@ -193,7 +180,7 @@ const ResearchPage = () => {
                     {area.title}
                   </h3>
                   <p className="text-sm sm:text-base text-gray-600 mb-4 lg:mb-6 leading-relaxed">
-                    {area.shortDescription}
+                    {area.shortDescription || area.description}
                   </p>
                   <div className="flex justify-between text-xs sm:text-sm text-gray-500 mb-3 lg:mb-4">
                     <span>{area.publications} Publications</span>
@@ -249,7 +236,7 @@ const ResearchPage = () => {
                           Current Projects
                         </h3>
                         <ul className="space-y-2 sm:space-y-3">
-                          {area.currentProjects.map((project, index) => (
+                          {area.currentProjects?.map((project, index) => (
                             <li key={index} className="flex items-start">
                               <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                               <span className="text-sm sm:text-base text-gray-600">
