@@ -136,3 +136,32 @@ body {
 .animate-progress {
   animation: progress linear infinite;
 }
+
+/* Home awards section */
+@keyframes award-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.award-fade-up {
+  animation: award-fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes award-glow {
+  0%, 100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.award-glow-pulse {
+  animation: award-glow 5s ease-in-out infinite;
+}

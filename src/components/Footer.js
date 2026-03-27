@@ -1,4 +1,7 @@
-import Link from 'next/link'
+import Link from "next/link";
+
+const MAPS_DIRECTIONS_URL =
+  "https://www.google.com/maps/search/?api=1&query=College+of+Computing%2C+Prince+of+Songkla+University%2C+Phuket+Campus+80%2C+M.1+Vichitsongkram+Road%2C+Kathu%2C+Phuket+83120";
 
 export default function Footer() {
   return (
@@ -9,55 +12,212 @@ export default function Footer() {
             <h3 className="text-2xl font-bold mb-6 tracking-tight">
               SENET <span className="font-normal opacity-80">Lab</span>
             </h3>
-            <p className="text-blue-100/70 text-base mb-8 max-w-sm leading-relaxed">
-              Pioneering research in software engineering and network technologies 
-              to architect the future of intelligent digital ecosystems.
+            <p className="text-blue-100/70 text-base mb-2 max-w-md leading-relaxed">
+              <span className="text-white/90 font-medium">Software Engineering &amp; Network Technologies</span>{" "}
+              research lab at the{" "}
+              <a
+                href="https://www.computing.psu.ac.th/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-100 hover:text-white underline-offset-4 hover:underline"
+              >
+                College of Computing
+              </a>
+              ,{" "}
+              <a
+                href="https://phuket.psu.ac.th/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-100 hover:text-white underline-offset-4 hover:underline"
+              >
+                Prince of Songkla University, Phuket Campus
+              </a>
+              .
             </p>
-            <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-100 hover:bg-white/10 hover:text-white transition-all">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                </svg>
-              </a>
-              <a href="#" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-100 hover:bg-white/10 hover:text-white transition-all">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-              </a>
+            <p className="text-blue-100/60 text-sm mb-8 max-w-md leading-relaxed">
+              We work on software engineering, quality assurance, and network systems—from methods and tools to real deployments.
+            </p>
+            <div>
+              <h4 className="text-sm font-bold uppercase tracking-widest mb-5 text-white/60">
+                Contact information
+              </h4>
+              <div className="space-y-5">
+                <div className="flex items-start gap-4">
+                  <div
+                    className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-100 flex-shrink-0"
+                    aria-hidden
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-bold text-white mb-1">Our location</h5>
+                    <p className="text-sm text-blue-100/70 leading-relaxed">
+                      College of Computing, Prince of Songkla University
+                      <br />
+                      Phuket Campus 80, Moo 1, Vichitsongkram Road
+                      <br />
+                      Kathu, Phuket 83120, Thailand
+                    </p>
+                    <a
+                      href={MAPS_DIRECTIONS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block mt-2 text-sm font-medium text-blue-100 hover:text-white underline-offset-4 hover:underline transition-colors"
+                    >
+                      Open in Google Maps
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div
+                    className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-100 flex-shrink-0"
+                    aria-hidden
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-bold text-white mb-1">Email</h5>
+                    <a
+                      href="mailto:senet@phuket.psu.ac.th"
+                      className="text-sm text-blue-100 hover:text-white font-medium underline-offset-4 hover:underline transition-colors"
+                    >
+                      senet@phuket.psu.ac.th
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div
+                    className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-blue-100 flex-shrink-0"
+                    aria-hidden
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-bold text-white mb-1">Facebook</h5>
+                    <a
+                      href="https://www.facebook.com/senet.lab"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-100 hover:text-white font-medium underline-offset-4 hover:underline transition-colors"
+                    >
+                      SENET Research Lab
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          
+
           <div className="lg:col-span-2 lg:col-start-8">
-            <h4 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-60">Research</h4>
+            <h4 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-60">
+              Research
+            </h4>
             <ul className="space-y-4">
-              <li><Link href="/PublicationPage" className="text-blue-100/70 hover:text-white transition-colors">Publications</Link></li>
-              <li><Link href="#" className="text-blue-100/70 hover:text-white transition-colors">Project Portfolio</Link></li>
-              <li><Link href="#" className="text-blue-100/70 hover:text-white transition-colors">Global Partners</Link></li>
-              <li><Link href="#" className="text-blue-100/70 hover:text-white transition-colors">Documentation</Link></li>
+              <li>
+                <Link href="/ResearchPage" className="text-blue-100/70 hover:text-white transition-colors">
+                  Research areas
+                </Link>
+              </li>
+              <li>
+                <Link href="/PublicationPage" className="text-blue-100/70 hover:text-white transition-colors">
+                  Publications
+                </Link>
+              </li>
+              <li>
+                <Link href="/AwardPage" className="text-blue-100/70 hover:text-white transition-colors">
+                  Awards &amp; grants
+                </Link>
+              </li>
+              <li>
+                <Link href="/JoinUs" className="text-blue-100/70 hover:text-white transition-colors">
+                  Contact &amp; collaboration
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div className="lg:col-span-2 lg:col-start-10">
-            <h4 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-60">About Us</h4>
+            <h4 className="text-sm font-bold uppercase tracking-widest mb-6 opacity-60">
+              About
+            </h4>
             <ul className="space-y-4">
-              <li><Link href="/TeamPage" className="text-blue-100/70 hover:text-white transition-colors">Our Scholars</Link></li>
-              <li><Link href="#" className="text-blue-100/70 hover:text-white transition-colors">Latest News</Link></li>
-              <li><Link href="#" className="text-blue-100/70 hover:text-white transition-colors">Symposiums</Link></li>
-              <li><Link href="/JoinUs" className="text-blue-100/70 hover:text-white transition-colors">Admissions</Link></li>
+              <li>
+                <Link href="/" className="text-blue-100/70 hover:text-white transition-colors">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href="/TeamPage" className="text-blue-100/70 hover:text-white transition-colors">
+                  Team
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="https://www.computing.psu.ac.th/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-100/70 hover:text-white transition-colors"
+                >
+                  College of Computing
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://phuket.psu.ac.th/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-100/70 hover:text-white transition-colors"
+                >
+                  PSU Phuket Campus
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-16 lg:mt-24 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-sm text-blue-100/50">
-            &copy; {new Date().getFullYear()} SENET Research Lab. All rights reserved.
+          <p className="text-sm text-blue-100/50 text-center md:text-left max-w-xl">
+            &copy; {new Date().getFullYear()} SENET Lab, College of Computing, Prince of Songkla University,
+            Phuket Campus. All rights reserved.
           </p>
-          <div className="flex gap-8 text-sm">
-             <a href="#" className="text-blue-100/50 hover:text-white transition-colors">Privacy Policy</a>
-             <a href="#" className="text-blue-100/50 hover:text-white transition-colors">Terms of Service</a>
+          <div className="flex flex-wrap justify-center gap-6 text-sm">
+            <a
+              href="https://www.computing.psu.ac.th/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-100/50 hover:text-white transition-colors"
+            >
+              computing.psu.ac.th
+            </a>
+            <a
+              href="https://phuket.psu.ac.th/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-100/50 hover:text-white transition-colors"
+            >
+              phuket.psu.ac.th
+            </a>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

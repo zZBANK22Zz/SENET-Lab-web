@@ -5,22 +5,25 @@ import { useRouter } from "next/router";
 import ResearchAreaData from "@/data/ResearchArea/ResearchAreaData";
 import AwardsData from "@/data/Awards/AwardsData";
 
+const parseFundingAmount = (amount) => {
+  const n = parseInt(String(amount).replace(/[^\d]/g, ""), 10);
+  return Number.isFinite(n) ? n : 0;
+};
+
 const ResearchPage = () => {
   const [activeTab, setActiveTab] = useState("overview");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedArea, setSelectedArea] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const Router = useRouter();
-  const Research = ResearchAreaData;
+  const router = useRouter();
+  const researchAreas = ResearchAreaData;
 
-    const awards = AwardsData.flatMap((person) =>
+  const awards = AwardsData.flatMap((person) =>
     person.awards.map((a) => ({
       id: `${person.id}-${a.id}`,
       title: a.title,
       subtitle: person.name || a.owner || "—",
       year: String(a.year),
       month: a.month || null,
-      // If the source award has a category, keep it; otherwise infer:
       category: a.category || (a.fund ? "funding" : "research-excellence"),
       description: a.description || "",
       amount: a.fund
@@ -35,22 +38,11 @@ const ResearchPage = () => {
         <svg
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
-          fill="#000000"
+          fill="currentColor"
+          className="w-8 h-8"
+          aria-hidden
         >
-          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-          <g
-            id="SVGRepo_tracerCarrier"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          ></g>
-          <g id="SVGRepo_iconCarrier">
-            {" "}
-            <rect x="0" fill="none" width="20" height="20"></rect>{" "}
-            <g>
-              {" "}
-              <path d="M4.46 5.16L5 7.46l-.54 2.29 2.01 1.24L7.7 13l2.3-.54 2.3.54 1.23-2.01 2.01-1.24L15 7.46l.54-2.3-2-1.24-1.24-2.01-2.3.55-2.29-.54-1.25 2zm5.55 6.34C7.79 11.5 6 9.71 6 7.49c0-2.2 1.79-3.99 4.01-3.99 2.2 0 3.99 1.79 3.99 3.99 0 2.22-1.79 4.01-3.99 4.01zm-.02-1C8.33 10.5 7 9.16 7 7.5c0-1.65 1.33-3 2.99-3S13 5.85 13 7.5c0 1.66-1.35 3-3.01 3zm3.84 1.1l-1.28 2.24-2.08-.47L13 19.2l1.4-2.2h2.5zm-7.7.07l1.25 2.25 2.13-.51L7 19.2 5.6 17H3.1z"></path>{" "}
-            </g>{" "}
-          </g>
+          <path d="M4.46 5.16L5 7.46l-.54 2.29 2.01 1.24L7.7 13l2.3-.54 2.3.54 1.23-2.01 2.01-1.24L15 7.46l.54-2.3-2-1.24-1.24-2.01-2.3.55-2.29-.54-1.25 2zm5.55 6.34C7.79 11.5 6 9.71 6 7.49c0-2.2 1.79-3.99 4.01-3.99 2.2 0 3.99 1.79 3.99 3.99 0 2.22-1.79 4.01-3.99 4.01zm-.02-1C8.33 10.5 7 9.16 7 7.5c0-1.65 1.33-3 2.99-3S13 5.85 13 7.5c0 1.66-1.35 3-3.01 3zm3.84 1.1l-1.28 2.24-2.08-.47L13 19.2l1.4-2.2h2.5zm-7.7.07l1.25 2.25 2.13-.51L7 19.2 5.6 17H3.1z" />
         </svg>
       ),
       badge: a.badge || (a.fund ? "Major Grant" : "Award"),
@@ -61,70 +53,147 @@ const ResearchPage = () => {
     totalAwards: awards.length,
     totalFunding: awards
       .filter((award) => award.amount)
-      .reduce(
-        (sum, award) =>
-          sum + parseInt(String(award.amount).replace(/[^\d]/g, ""), 10),
-        0
-      ),
-    currentYear: awards.filter((award) => award.year === "2024").length,
-    categories: new Set(awards.map((award) => award.category)).size,
+      .reduce((sum, award) => sum + parseFundingAmount(award.amount), 0),
   };
 
-  const researchAreas = ResearchAreaData;
+  const focusIntro =
+    "Three connected strengths—software engineering, testing, and networks—shape how we frame problems, validate solutions, and deploy them at scale.";
 
-  const handlePublicationClick = () => {
-    Router.push("/PublicationPage");
+  const scrollToFocus = () => {
+    document.getElementById("research-focus")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-light">
+    <div className="min-h-screen bg-bg-off text-text-main">
       <Navbar />
 
-      {/* Hero Section - Mobile Responsive */}
-      <section className="bg-gradient-light py-12 sm:py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gradient mb-6 sm:mb-8">
-              Our Research
-            </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-blue-700 max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed px-4">
-              At SEnet Research Lab, we pursue cutting-edge research in software
-              engineering and network technologies. Our interdisciplinary
-              approach combines theoretical foundations with practical
-              applications to address real-world challenges in modern computing
-              systems.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <button
-                onClick={handlePublicationClick}
-                className="btn-primary min-w-[200px]"
-              >
-                Browse Publications
-              </button>
-              <button 
-                onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
-                className="btn-secondary min-w-[200px]"
-              >
-                Research Collaborations
-              </button>
+      <section className="relative overflow-hidden border-b border-border-light bg-gradient-to-b from-primary-soft/50 via-bg-off to-bg-off">
+        <div
+          className="pointer-events-none absolute -right-20 top-0 h-80 w-80 rounded-full bg-primary-action/15 blur-3xl"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-primary-deep/10 blur-3xl"
+          aria-hidden
+        />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16 lg:py-24">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            <div className="lg:col-span-7 text-center lg:text-left">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-action mb-4">
+                An open invitation
+              </p>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-main tracking-tight leading-tight mb-6">
+                Step into research{" "}
+                <span className="text-gradient-official">with a clear focus</span>
+              </h1>
+              <p className="text-base sm:text-lg text-text-muted leading-relaxed max-w-2xl mx-auto lg:mx-0 mb-4">
+                The SENET Lab welcomes collaborators, students, and partners who
+                care about dependable software and the networks that carry it.
+                Below is how we channel curiosity—so you can quickly see where
+                your interests align with ours.
+              </p>
+              <p className="text-sm sm:text-base text-text-main/90 font-medium max-w-2xl mx-auto lg:mx-0 mb-8">
+                {focusIntro}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <button
+                  type="button"
+                  onClick={() => router.push("/PublicationPage")}
+                  className="btn-primary min-w-[200px]"
+                >
+                  Browse publications
+                </button>
+                <button
+                  type="button"
+                  onClick={scrollToFocus}
+                  className="btn-secondary min-w-[200px]"
+                >
+                  Explore our focus areas
+                </button>
+              </div>
+              <p className="mt-8 text-sm text-text-muted max-w-xl mx-auto lg:mx-0">
+                Prefer to start a conversation?{" "}
+                <button
+                  type="button"
+                  onClick={() => router.push("/JoinUs")}
+                  className="font-semibold text-primary-action hover:text-primary-deep underline-offset-4 hover:underline"
+                >
+                  Visit Join Us
+                </button>{" "}
+                for roles and collaboration paths.
+              </p>
+            </div>
+
+            <div className="lg:col-span-5">
+              <div className="rounded-2xl border border-border-light bg-bg-white/90 backdrop-blur-sm p-6 sm:p-8 shadow-lift">
+                <p className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-4">
+                  Where we concentrate
+                </p>
+                <ul className="space-y-4">
+                  {researchAreas.map((area) => (
+                    <li key={area.id}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveTab(area.id);
+                          scrollToFocus();
+                        }}
+                        className="w-full text-left rounded-xl border border-border-light bg-bg-off/60 hover:bg-primary-soft hover:border-primary-action/30 p-4 transition-all group"
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-deep text-white shadow-soft">
+                            {area.icon}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="font-bold text-text-main group-hover:text-primary-deep transition-colors">
+                              {area.title}
+                            </p>
+                            <p className="text-sm text-text-muted mt-1 leading-snug line-clamp-2">
+                              {area.shortDescription}
+                            </p>
+                            <p className="mt-2 text-xs font-semibold text-primary-action">
+                              Open this focus →
+                            </p>
+                          </div>
+                        </div>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Research Areas Tab Navigation - Mobile Responsive */}
-      <section className="py-8 sm:py-12 bg-white">
+      <section
+        id="research-focus"
+        className="py-12 sm:py-16 lg:py-20 bg-bg-white border-b border-border-light scroll-mt-20"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Tab Navigation - Responsive */}
-          <div className="mb-8 sm:mb-12">
-            {/* Mobile: Dropdown Style */}
+          <div className="max-w-3xl mx-auto text-center mb-10 sm:mb-14">
+            <h2 className="text-2xl sm:text-3xl font-bold text-text-main mb-4">
+              Our research <span className="text-gradient-official">focus areas</span>
+            </h2>
+            <p className="text-text-muted leading-relaxed">
+              Each strand below is both a specialty and a doorway: dive into
+              narrative, projects, and momentum—or start from the overview to
+              compare how the pieces fit together.
+            </p>
+          </div>
+
+          <div className="mb-10 sm:mb-12">
             <div className="sm:hidden">
+              <label htmlFor="research-tab-select" className="sr-only">
+                Choose a focus area
+              </label>
               <select
+                id="research-tab-select"
                 value={activeTab}
                 onChange={(e) => setActiveTab(e.target.value)}
-                className="block w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900"
+                className="block w-full rounded-xl border border-border-light bg-bg-white px-4 py-3 text-base text-text-main shadow-soft focus:outline-none focus:ring-2 focus:ring-primary-action/40 focus:border-primary-action"
               >
-                <option value="overview">Overview</option>
+                <option value="overview">Overview — all focus areas</option>
                 {researchAreas.map((area) => (
                   <option key={area.id} value={area.id}>
                     {area.title}
@@ -133,26 +202,27 @@ const ResearchPage = () => {
               </select>
             </div>
 
-            {/* Desktop: Button Tabs */}
-            <div className="hidden sm:flex flex-wrap justify-center gap-2 lg:gap-4">
+            <div className="hidden sm:flex flex-wrap justify-center gap-2">
               <button
+                type="button"
                 onClick={() => setActiveTab("overview")}
-                className={`px-3 lg:px-6 py-2 lg:py-3 rounded-lg font-medium transition-colors text-sm lg:text-base ${
+                className={`rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
                   activeTab === "overview"
-                    ? "bg-gray-900 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-primary-deep text-white shadow-soft"
+                    : "bg-bg-off text-text-muted border border-border-light hover:border-primary-action/40"
                 }`}
               >
                 Overview
               </button>
               {researchAreas.map((area) => (
                 <button
+                  type="button"
                   key={area.id}
                   onClick={() => setActiveTab(area.id)}
-                  className={`px-3 lg:px-6 py-2 lg:py-3 rounded-lg font-medium transition-colors text-sm lg:text-base ${
+                  className={`rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
                     activeTab === area.id
-                      ? "bg-gray-900 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-primary-deep text-white shadow-soft"
+                      : "bg-bg-off text-text-muted border border-border-light hover:border-primary-action/40"
                   }`}
                 >
                   {area.title}
@@ -161,85 +231,110 @@ const ResearchPage = () => {
             </div>
           </div>
 
-          {/* Overview Tab Content - Mobile Responsive Grid */}
           {activeTab === "overview" && (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {researchAreas.map((area) => (
                 <div
                   key={area.id}
-                  className="bg-gray-50 rounded-xl p-6 lg:p-8 hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1 cursor-pointer"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => {
                     setSelectedArea(area);
                     setIsModalOpen(true);
                   }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setSelectedArea(area);
+                      setIsModalOpen(true);
+                    }
+                  }}
+                  className="card-base p-6 lg:p-8 cursor-pointer"
                 >
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-900 rounded-lg flex items-center justify-center text-white mb-4 lg:mb-6">
+                  <div className="w-14 h-14 bg-primary-deep rounded-xl flex items-center justify-center text-white mb-5 shadow-soft [&_svg]:text-white">
                     {area.icon}
                   </div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">
+                  <h3 className="text-lg sm:text-xl font-bold text-text-main mb-3">
                     {area.title}
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 mb-4 lg:mb-6 leading-relaxed">
+                  <p className="text-sm sm:text-base text-text-muted mb-5 leading-relaxed min-h-[3rem]">
                     {area.shortDescription || area.description}
                   </p>
-                  <div className="flex justify-between text-xs sm:text-sm text-gray-500 mb-3 lg:mb-4">
-                    <span>{area.publications} Publications</span>
-                    <span>{area.funding} Funding</span>
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    <span className="inline-flex items-center rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary-deep">
+                      {area.publications} publications
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-bg-off border border-border-light px-3 py-1 text-xs font-semibold text-text-muted">
+                      {area.funding} funded
+                    </span>
                   </div>
-                  <button
-                    onClick={() => setActiveTab(area.id)}
-                    className="text-sm sm:text-base text-gray-900 font-medium hover:text-gray-700 transition-colors"
-                  >
-                    Learn More →
-                  </button>
+                  <div className="flex items-center justify-between gap-3">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTab(area.id);
+                      }}
+                      className="text-sm font-semibold text-primary-action hover:text-primary-deep transition-colors"
+                    >
+                      Full focus →
+                    </button>
+                    <span className="text-xs text-text-muted">Quick view</span>
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
-          {/* Individual Research Area Content - Mobile Responsive */}
           {researchAreas.map(
             (area) =>
               activeTab === area.id && (
-                <div key={area.id} className="max-w-4xl mx-auto">
-                  <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
-                    {/* Header - Mobile Responsive */}
-                    <div className="flex flex-col sm:flex-row sm:items-center mb-6 sm:mb-8">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-900 rounded-xl flex items-center justify-center text-white mb-4 sm:mb-0 sm:mr-6 mx-auto sm:mx-0">
+                <div key={area.id} className="max-w-4xl mx-auto animate-in fade-in duration-300">
+                  <div className="card-base p-6 sm:p-8 lg:p-10 border-primary-soft">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-8">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-deep rounded-2xl flex items-center justify-center text-white mx-auto sm:mx-0 shadow-soft shrink-0 [&_svg]:text-white">
                         {area.icon}
                       </div>
-                      <div className="text-center sm:text-left">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                      <div className="text-center sm:text-left flex-1">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-primary-action mb-2">
+                          Research focus
+                        </p>
+                        <h2 className="text-2xl sm:text-3xl font-bold text-text-main mb-2">
                           {area.title}
                         </h2>
-                        <div className="flex flex-col sm:flex-row sm:gap-6 text-sm text-gray-500 space-y-1 sm:space-y-0">
-                          <span>{area.publications} Publications</span>
-                          <span>{area.funding} Total Funding</span>
+                        <p className="text-text-muted leading-relaxed max-w-2xl">
+                          {area.shortDescription}
+                        </p>
+                        <div className="flex flex-wrap justify-center sm:justify-start gap-3 mt-4">
+                          <span className="inline-flex rounded-full bg-primary-soft px-3 py-1 text-xs font-bold text-primary-deep">
+                            {area.publications} publications
+                          </span>
+                          <span className="inline-flex rounded-full border border-border-light bg-bg-off px-3 py-1 text-xs font-bold text-text-muted">
+                            {area.funding} support
+                          </span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Research Focus */}
-                    <div className="mb-6 sm:mb-8">
-                      <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
-                        Research Focus
+                    <div className="mb-8 rounded-2xl bg-primary-soft/40 border border-border-light p-6 sm:p-8">
+                      <h3 className="text-lg font-bold text-text-main mb-3">
+                        How we frame this area
                       </h3>
-                      <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                      <p className="text-sm sm:text-base text-text-muted leading-relaxed">
                         {area.detailedDescription}
                       </p>
                     </div>
 
-                    {/* Projects and Impact - Mobile Stacked */}
-                    <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+                    <div className="grid md:grid-cols-2 gap-8">
                       <div>
-                        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
-                          Current Projects
+                        <h3 className="text-lg font-bold text-text-main mb-4">
+                          Active directions
                         </h3>
-                        <ul className="space-y-2 sm:space-y-3">
+                        <ul className="space-y-3">
                           {area.currentProjects?.map((project, index) => (
-                            <li key={index} className="flex items-start">
-                              <div className="w-2 h-2 bg-gray-900 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                              <span className="text-sm sm:text-base text-gray-600">
+                            <li key={index} className="flex items-start gap-3">
+                              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary-action" />
+                              <span className="text-sm sm:text-base text-text-muted leading-relaxed">
                                 {project}
                               </span>
                             </li>
@@ -248,27 +343,49 @@ const ResearchPage = () => {
                       </div>
 
                       <div>
-                        <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">
-                          Research Impact
+                        <h3 className="text-lg font-bold text-text-main mb-4">
+                          Momentum at a glance
                         </h3>
-                        <div className="space-y-3 sm:space-y-4">
-                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                            <div className="text-xl sm:text-2xl font-bold text-gray-900">
+                        <div className="space-y-4">
+                          <div className="rounded-xl border border-border-light bg-bg-off p-4">
+                            <div className="text-2xl font-bold text-primary-deep tabular-nums">
                               {area.publications}
                             </div>
-                            <div className="text-xs sm:text-sm text-gray-600">
-                              Published Papers
+                            <div className="text-xs font-semibold uppercase tracking-wide text-text-muted mt-1">
+                              Published papers
                             </div>
                           </div>
-                          <div className="bg-gray-50 rounded-lg p-3 sm:p-4">
-                            <div className="text-xl sm:text-2xl font-bold text-gray-900">
+                          <div className="rounded-xl border border-border-light bg-bg-off p-4">
+                            <div className="text-xl font-bold text-text-main">
                               {area.funding}
                             </div>
-                            <div className="text-xs sm:text-sm text-gray-600">
-                              Research Funding
+                            <div className="text-xs font-semibold uppercase tracking-wide text-text-muted mt-1">
+                              Research funding
                             </div>
                           </div>
                         </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-10 pt-8 border-t border-border-light flex flex-col sm:flex-row gap-4 justify-center sm:justify-between items-center">
+                      <p className="text-sm text-text-muted text-center sm:text-left">
+                        Want to go deeper in print or partner on a project?
+                      </p>
+                      <div className="flex flex-wrap gap-3 justify-center">
+                        <button
+                          type="button"
+                          onClick={() => router.push("/PublicationPage")}
+                          className="btn-primary text-sm py-2.5 px-5"
+                        >
+                          See publications
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => router.push("/JoinUs")}
+                          className="btn-secondary text-sm py-2.5 px-5"
+                        >
+                          Talk with us
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -278,33 +395,93 @@ const ResearchPage = () => {
         </div>
       </section>
 
-      {/* Research Statistics - Mobile Responsive */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-white">
-        <div className="text-center mt-8">
-          <div className="text-5xl sm:text-6xl font-extrabold text-gray-900 mb-4">
-            {stats.totalAwards} Awards
+      <section className="py-14 sm:py-16 bg-gradient-official text-white">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4 tracking-tight">
+            Recognition follows focused work
+          </h2>
+          <p className="text-white/90 text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+            Grants and awards reinforce the same priorities you see above—rigor,
+            impact, and translational energy across our focus areas.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-stretch sm:items-center">
+            <div className="rounded-2xl bg-white/10 backdrop-blur-sm px-8 py-6 border border-white/20">
+              <div className="text-4xl sm:text-5xl font-bold tabular-nums">
+                {stats.totalAwards}
+              </div>
+              <div className="text-sm font-medium text-white/80 mt-1">
+                Honors & entries
+              </div>
+            </div>
+            <div className="rounded-2xl bg-white/10 backdrop-blur-sm px-8 py-6 border border-white/20">
+              <div className="text-2xl sm:text-3xl font-bold tabular-nums">
+                {stats.totalFunding > 0
+                  ? stats.totalFunding.toLocaleString("th-TH")
+                  : "—"}
+              </div>
+              <div className="text-sm font-medium text-white/80 mt-1">
+                THB from tracked grants
+              </div>
+            </div>
           </div>
-          <div className="text-3xl sm:text-4xl font-bold text-green-600">
-            {stats.totalFunding.toLocaleString("th-TH")} baht Total Funding
-          </div>
+          <button
+            type="button"
+            onClick={() => router.push("/AwardPage")}
+            className="btn-primary-white mt-10"
+          >
+            View awards
+          </button>
         </div>
       </section>
 
       {isModalOpen && selectedArea && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50 transition-opacity duration-300 ease-out">
-          <div className="bg-white rounded-xl max-w-lg w-full p-6 relative shadow-xl transform transition-all duration-300 ease-out scale-95 opacity-0 animate-modalOpen">
+        <div
+          className="fixed inset-0 z-50 flex justify-center items-center p-4 bg-black/45 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="focus-modal-title"
+        >
+          <div className="bg-bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative shadow-lift border border-border-light animate-modalOpen">
             <button
+              type="button"
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-xl font-bold"
+              className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full text-text-muted hover:bg-bg-off hover:text-text-main text-xl font-bold transition-colors"
+              aria-label="Close"
             >
               ×
             </button>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-deep text-white mb-4 [&_svg]:text-white">
+              {selectedArea.icon}
+            </div>
+            <h2
+              id="focus-modal-title"
+              className="text-xl sm:text-2xl font-bold text-text-main mb-3 pr-8"
+            >
               {selectedArea.title}
             </h2>
-            <p className="text-gray-700 text-base leading-relaxed">
+            <p className="text-text-muted text-sm sm:text-base leading-relaxed mb-6">
               {selectedArea.detailedDescription || selectedArea.description}
             </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setActiveTab(selectedArea.id);
+                  scrollToFocus();
+                }}
+                className="btn-primary flex-1 text-sm"
+              >
+                Open full focus
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(false)}
+                className="btn-secondary flex-1 text-sm"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -315,7 +492,7 @@ const ResearchPage = () => {
         @keyframes modalOpen {
           from {
             opacity: 0;
-            transform: scale(0.95);
+            transform: scale(0.96);
           }
           to {
             opacity: 1;
