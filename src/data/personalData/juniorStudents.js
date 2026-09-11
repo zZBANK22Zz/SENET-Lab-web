@@ -14,7 +14,7 @@ const juniorStudents = [
       researchInterests: ["Software Engineering", "Software Testing"],
       supervisor: "Asst.Prof.Dr. Adisak Intana",
       yearStarted: "2024",
-      yearLevel: "4rd Year",
+      yearLevel: "Graduated",
     },
     currentWork: {
       title: "Enhanced Test Case Generation Using Fault Tree Analysis and CCTM",
@@ -36,7 +36,7 @@ const juniorStudents = [
       researchInterests: ["Software Engineering"],
       supervisor: "Asst.Prof.Dr. Adisak Intana",
       yearStarted: "2024",
-      yearLevel: "4rd Year",
+      yearLevel: "Graduated",
     },
     currentWork: {
       title:
@@ -60,7 +60,7 @@ const juniorStudents = [
       researchInterests: ["Software Engineering"],
       supervisor: "Asst.Prof.Dr. Adisak Intana",
       yearStarted: "2024",
-      yearLevel: "4rd Year",
+      yearLevel: "Graduated",
     },
     currentWork: {
       title:
@@ -84,7 +84,7 @@ const juniorStudents = [
       researchInterests: ["Software Engineering"],
       supervisor: "Asst.Prof.Dr. Adisak Intana",
       yearStarted: "2025",
-      yearLevel: "3rd Year",
+      yearLevel: "4th year",
     },
     currentWork: {
       title:
@@ -108,7 +108,7 @@ const juniorStudents = [
       researchInterests: ["Web Development"],
       supervisor: "Kuljaree Tantayakul",
       yearStarted: "2024",
-      yearLevel: "4rd Year",
+      yearLevel: "Graduated",
     },
     currentWork: {
       title: "Stock Web Application",
@@ -131,7 +131,7 @@ const juniorStudents = [
       researchInterests: ["Software Engineering"],
       supervisor: "Kuljaree Tantayakul",
       yearStarted: "2024",
-      yearLevel: "4rd Year",
+      yearLevel: "Graduated",
     },
     currentWork: {
       title: "The development of Recommended for sport tourist",

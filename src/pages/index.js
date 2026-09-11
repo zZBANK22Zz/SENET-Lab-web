@@ -1,4 +1,5 @@
 import React from "react";
+import Head from "next/head";
 import Navbar from "../components/Navbar";
 import Hero from "@/components/Hero";
 import HomeEngagement from "@/components/HomeEngagement";
@@ -8,12 +9,17 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh bg-bg-canvas">
+      <Head>
+        <title>SENET Lab · PSU Phuket</title>
+      </Head>
       <Navbar />
-      <Hero />
-      <HomeEngagement />
-      <ResearchAreas />
-      <Awards />
+      <main id="main">
+        <Hero />
+        <HomeEngagement />
+        <ResearchAreas />
+        <Awards />
+      </main>
       <Footer />
     </div>
   );
